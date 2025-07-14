@@ -1,6 +1,6 @@
 ﻿# X-Tickets
 
-## Dependecies
+## Dependencies
 - Docker
 - Postgres
 - NodeJS (22.17.0)
