@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "event_date_times",
+  "info": {
+    "singularName": "event-date-time",
+    "pluralName": "event-date-times",
+    "displayName": "EventDateTime"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "DateTime": {
+      "type": "datetime",
+      "required": true
+    },
+    "Venue": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::venue.venue"
+    },
+    "Event": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::event.event",
+      "inversedBy": "DatesAndTimes"
+    }
+  }
+}

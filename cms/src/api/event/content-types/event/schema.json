@@ -1,0 +1,58 @@
+{
+  "kind": "collectionType",
+  "collectionName": "events",
+  "info": {
+    "singularName": "event",
+    "pluralName": "events",
+    "displayName": "Event"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Title": {
+      "type": "string",
+      "maxLength": 124,
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "Title",
+      "required": true
+    },
+    "Description": {
+      "type": "blocks",
+      "required": true
+    },
+    "Image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Price": {
+      "type": "decimal",
+      "required": true,
+      "min": 0
+    },
+    "Owner": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "Venue": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::venue.venue"
+    },
+    "DatesAndTimes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::event-date-time.event-date-time",
+      "mappedBy": "Event"
+    }
+  }
+}

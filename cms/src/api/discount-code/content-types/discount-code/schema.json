@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "discount_codes",
+  "info": {
+    "singularName": "discount-code",
+    "pluralName": "discount-codes",
+    "displayName": "DiscountCode"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "code": {
+      "type": "uid",
+      "required": true,
+      "minLength": 3
+    },
+    "TotalDiscountPercentage": {
+      "type": "decimal",
+      "required": true,
+      "min": 0,
+      "max": 100
+    },
+    "TimesValid": {
+      "type": "integer",
+      "required": true,
+      "default": 0,
+      "min": 0
+    },
+    "Event": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::event.event"
+    }
+  }
+}

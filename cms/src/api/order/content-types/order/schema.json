@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "orders",
+  "info": {
+    "singularName": "order",
+    "pluralName": "orders",
+    "displayName": "Order"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Quantity": {
+      "type": "integer",
+      "required": true,
+      "min": 1
+    },
+    "PickedUp": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "Customer": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::customer.customer"
+    },
+    "Payment": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::payment.payment"
+    },
+    "EventDateTime": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::event-date-time.event-date-time"
+    }
+  }
+}

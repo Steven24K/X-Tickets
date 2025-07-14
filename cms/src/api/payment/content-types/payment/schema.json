@@ -1,0 +1,38 @@
+{
+  "kind": "collectionType",
+  "collectionName": "payments",
+  "info": {
+    "singularName": "payment",
+    "pluralName": "payments",
+    "displayName": "Payment"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Reference": {
+      "type": "uid",
+      "required": true
+    },
+    "Amount": {
+      "type": "decimal",
+      "required": true,
+      "min": 0
+    },
+    "PaymentStatus": {
+      "type": "enumeration",
+      "required": true,
+      "default": "open",
+      "enum": [
+        "open",
+        "canceled",
+        "pending",
+        "authorized",
+        "expired",
+        "failed",
+        "paid"
+      ]
+    }
+  }
+}
