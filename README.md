@@ -1,5 +1,7 @@
 ﻿# X-Tickets
 
+![High-Level Architecture Design](/architecture-design.jpg)
+
 ## Dependencies
 - Strapi (CMS)
 - NextJs
