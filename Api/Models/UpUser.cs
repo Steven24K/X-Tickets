@@ -43,9 +43,9 @@ public partial class UpUser
 
     public virtual ICollection<EventsOwnerLnk> EventsOwnerLnks { get; set; } = new List<EventsOwnerLnk>();
 
-    public virtual ICollection<UpUsersRoleLnk> UpUsersRoleLnks { get; set; } = new List<UpUsersRoleLnk>();
+    public virtual ICollection<ShopSettingValuesOwnerLnk> ShopSettingValuesOwnerLnks { get; set; } = new List<ShopSettingValuesOwnerLnk>();
 
-    public virtual ICollection<UpUsersSettingLnk> UpUsersSettingLnks { get; set; } = new List<UpUsersSettingLnk>();
+    public virtual ICollection<UpUsersRoleLnk> UpUsersRoleLnks { get; set; } = new List<UpUsersRoleLnk>();
 
     public virtual AdminUser? UpdatedBy { get; set; }
 }

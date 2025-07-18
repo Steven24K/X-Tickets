@@ -97,6 +97,10 @@ public partial class AdminUser
 
     public virtual ICollection<ShopSetting> ShopSettingUpdatedBies { get; set; } = new List<ShopSetting>();
 
+    public virtual ICollection<ShopSettingValue> ShopSettingValueCreatedBies { get; set; } = new List<ShopSettingValue>();
+
+    public virtual ICollection<ShopSettingValue> ShopSettingValueUpdatedBies { get; set; } = new List<ShopSettingValue>();
+
     public virtual ICollection<StrapiApiToken> StrapiApiTokenCreatedBies { get; set; } = new List<StrapiApiToken>();
 
     public virtual ICollection<StrapiApiTokenPermission> StrapiApiTokenPermissionCreatedBies { get; set; } = new List<StrapiApiTokenPermission>();

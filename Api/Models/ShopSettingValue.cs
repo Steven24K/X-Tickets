@@ -3,19 +3,13 @@ using System.Collections.Generic;
 
 namespace Api.Models;
 
-public partial class ShopSetting
+public partial class ShopSettingValue
 {
     public int Id { get; set; }
 
     public string? DocumentId { get; set; }
 
-    public string? SettingName { get; set; }
-
-    public string? DisplayName { get; set; }
-
-    public string? Description { get; set; }
-
-    public string? DataType { get; set; }
+    public string? OptionValue { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 
@@ -30,6 +24,8 @@ public partial class ShopSetting
     public string? Locale { get; set; }
 
     public virtual AdminUser? CreatedBy { get; set; }
+
+    public virtual ICollection<ShopSettingValuesOwnerLnk> ShopSettingValuesOwnerLnks { get; set; } = new List<ShopSettingValuesOwnerLnk>();
 
     public virtual ICollection<ShopSettingValuesShopSettingLnk> ShopSettingValuesShopSettingLnks { get; set; } = new List<ShopSettingValuesShopSettingLnk>();
 

@@ -48,6 +48,8 @@ public partial class CmsXTicketsContext : DbContext
 
     public virtual DbSet<EventsOwnerLnk> EventsOwnerLnks { get; set; }
 
+    public virtual DbSet<EventsSubEventsLnk> EventsSubEventsLnks { get; set; }
+
     public virtual DbSet<EventsVenueLnk> EventsVenueLnks { get; set; }
 
     public virtual DbSet<StrapiFile> Files { get; set; }
@@ -69,6 +71,12 @@ public partial class CmsXTicketsContext : DbContext
     public virtual DbSet<Payment> Payments { get; set; }
 
     public virtual DbSet<ShopSetting> ShopSettings { get; set; }
+
+    public virtual DbSet<ShopSettingValue> ShopSettingValues { get; set; }
+
+    public virtual DbSet<ShopSettingValuesOwnerLnk> ShopSettingValuesOwnerLnks { get; set; }
+
+    public virtual DbSet<ShopSettingValuesShopSettingLnk> ShopSettingValuesShopSettingLnks { get; set; }
 
     public virtual DbSet<StrapiApiToken> StrapiApiTokens { get; set; }
 
@@ -119,8 +127,6 @@ public partial class CmsXTicketsContext : DbContext
     public virtual DbSet<UpUser> UpUsers { get; set; }
 
     public virtual DbSet<UpUsersRoleLnk> UpUsersRoleLnks { get; set; }
-
-    public virtual DbSet<UpUsersSettingLnk> UpUsersSettingLnks { get; set; }
 
     public virtual DbSet<UploadFolder> UploadFolders { get; set; }
 
@@ -787,6 +793,36 @@ public partial class CmsXTicketsContext : DbContext
                 .HasConstraintName("events_owner_lnk_ifk");
         });
 
+        modelBuilder.Entity<EventsSubEventsLnk>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("events_sub_events_lnk_pkey");
+
+            entity.ToTable("events_sub_events_lnk");
+
+            entity.HasIndex(e => e.EventId, "events_sub_events_lnk_fk");
+
+            entity.HasIndex(e => e.InvEventId, "events_sub_events_lnk_ifk");
+
+            entity.HasIndex(e => e.EventOrd, "events_sub_events_lnk_ofk");
+
+            entity.HasIndex(e => new { e.EventId, e.InvEventId }, "events_sub_events_lnk_uq").IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.EventId).HasColumnName("event_id");
+            entity.Property(e => e.EventOrd).HasColumnName("event_ord");
+            entity.Property(e => e.InvEventId).HasColumnName("inv_event_id");
+
+            entity.HasOne(d => d.Event).WithMany(p => p.EventsSubEventsLnkEvents)
+                .HasForeignKey(d => d.EventId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("events_sub_events_lnk_fk");
+
+            entity.HasOne(d => d.InvEvent).WithMany(p => p.EventsSubEventsLnkInvEvents)
+                .HasForeignKey(d => d.InvEventId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("events_sub_events_lnk_ifk");
+        });
+
         modelBuilder.Entity<EventsVenueLnk>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("events_venue_lnk_pkey");
@@ -1209,23 +1245,25 @@ public partial class CmsXTicketsContext : DbContext
                 .HasColumnType("timestamp(6) without time zone")
                 .HasColumnName("created_at");
             entity.Property(e => e.CreatedById).HasColumnName("created_by_id");
+            entity.Property(e => e.DataType)
+                .HasMaxLength(255)
+                .HasColumnName("data_type");
+            entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.DisplayName)
+                .HasMaxLength(255)
+                .HasColumnName("display_name");
             entity.Property(e => e.DocumentId)
                 .HasMaxLength(255)
                 .HasColumnName("document_id");
-            entity.Property(e => e.IsNumber).HasColumnName("is_number");
             entity.Property(e => e.Locale)
                 .HasMaxLength(255)
                 .HasColumnName("locale");
-            entity.Property(e => e.NumericOption).HasColumnName("numeric_option");
-            entity.Property(e => e.OptionName)
-                .HasMaxLength(255)
-                .HasColumnName("option_name");
-            entity.Property(e => e.OptionValue)
-                .HasMaxLength(255)
-                .HasColumnName("option_value");
             entity.Property(e => e.PublishedAt)
                 .HasColumnType("timestamp(6) without time zone")
                 .HasColumnName("published_at");
+            entity.Property(e => e.SettingName)
+                .HasMaxLength(255)
+                .HasColumnName("setting_name");
             entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp(6) without time zone")
                 .HasColumnName("updated_at");
@@ -1240,6 +1278,108 @@ public partial class CmsXTicketsContext : DbContext
                 .HasForeignKey(d => d.UpdatedById)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("shop_settings_updated_by_id_fk");
+        });
+
+        modelBuilder.Entity<ShopSettingValue>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("shop_setting_values_pkey");
+
+            entity.ToTable("shop_setting_values");
+
+            entity.HasIndex(e => e.CreatedById, "shop_setting_values_created_by_id_fk");
+
+            entity.HasIndex(e => new { e.DocumentId, e.Locale, e.PublishedAt }, "shop_setting_values_documents_idx");
+
+            entity.HasIndex(e => e.UpdatedById, "shop_setting_values_updated_by_id_fk");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.CreatedAt)
+                .HasColumnType("timestamp(6) without time zone")
+                .HasColumnName("created_at");
+            entity.Property(e => e.CreatedById).HasColumnName("created_by_id");
+            entity.Property(e => e.DocumentId)
+                .HasMaxLength(255)
+                .HasColumnName("document_id");
+            entity.Property(e => e.Locale)
+                .HasMaxLength(255)
+                .HasColumnName("locale");
+            entity.Property(e => e.OptionValue)
+                .HasMaxLength(255)
+                .HasColumnName("option_value");
+            entity.Property(e => e.PublishedAt)
+                .HasColumnType("timestamp(6) without time zone")
+                .HasColumnName("published_at");
+            entity.Property(e => e.UpdatedAt)
+                .HasColumnType("timestamp(6) without time zone")
+                .HasColumnName("updated_at");
+            entity.Property(e => e.UpdatedById).HasColumnName("updated_by_id");
+
+            entity.HasOne(d => d.CreatedBy).WithMany(p => p.ShopSettingValueCreatedBies)
+                .HasForeignKey(d => d.CreatedById)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("shop_setting_values_created_by_id_fk");
+
+            entity.HasOne(d => d.UpdatedBy).WithMany(p => p.ShopSettingValueUpdatedBies)
+                .HasForeignKey(d => d.UpdatedById)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("shop_setting_values_updated_by_id_fk");
+        });
+
+        modelBuilder.Entity<ShopSettingValuesOwnerLnk>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("shop_setting_values_owner_lnk_pkey");
+
+            entity.ToTable("shop_setting_values_owner_lnk");
+
+            entity.HasIndex(e => e.ShopSettingValueId, "shop_setting_values_owner_lnk_fk");
+
+            entity.HasIndex(e => e.UserId, "shop_setting_values_owner_lnk_ifk");
+
+            entity.HasIndex(e => new { e.ShopSettingValueId, e.UserId }, "shop_setting_values_owner_lnk_uq").IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.ShopSettingValueId).HasColumnName("shop_setting_value_id");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+
+            entity.HasOne(d => d.ShopSettingValue).WithMany(p => p.ShopSettingValuesOwnerLnks)
+                .HasForeignKey(d => d.ShopSettingValueId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("shop_setting_values_owner_lnk_fk");
+
+            entity.HasOne(d => d.User).WithMany(p => p.ShopSettingValuesOwnerLnks)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("shop_setting_values_owner_lnk_ifk");
+        });
+
+        modelBuilder.Entity<ShopSettingValuesShopSettingLnk>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("shop_setting_values_shop_setting_lnk_pkey");
+
+            entity.ToTable("shop_setting_values_shop_setting_lnk");
+
+            entity.HasIndex(e => e.ShopSettingValueId, "shop_setting_values_shop_setting_lnk_fk");
+
+            entity.HasIndex(e => e.ShopSettingId, "shop_setting_values_shop_setting_lnk_ifk");
+
+            entity.HasIndex(e => e.ShopSettingValueOrd, "shop_setting_values_shop_setting_lnk_oifk");
+
+            entity.HasIndex(e => new { e.ShopSettingValueId, e.ShopSettingId }, "shop_setting_values_shop_setting_lnk_uq").IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.ShopSettingId).HasColumnName("shop_setting_id");
+            entity.Property(e => e.ShopSettingValueId).HasColumnName("shop_setting_value_id");
+            entity.Property(e => e.ShopSettingValueOrd).HasColumnName("shop_setting_value_ord");
+
+            entity.HasOne(d => d.ShopSetting).WithMany(p => p.ShopSettingValuesShopSettingLnks)
+                .HasForeignKey(d => d.ShopSettingId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("shop_setting_values_shop_setting_lnk_ifk");
+
+            entity.HasOne(d => d.ShopSettingValue).WithMany(p => p.ShopSettingValuesShopSettingLnks)
+                .HasForeignKey(d => d.ShopSettingValueId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("shop_setting_values_shop_setting_lnk_fk");
         });
 
         modelBuilder.Entity<StrapiApiToken>(entity =>
@@ -2181,39 +2321,6 @@ public partial class CmsXTicketsContext : DbContext
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("up_users_role_lnk_fk");
-        });
-
-        modelBuilder.Entity<UpUsersSettingLnk>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("up_users_setting_lnk_pkey");
-
-            entity.ToTable("up_users_setting_lnk");
-
-            entity.HasIndex(e => e.UserId, "up_users_setting_lnk_fk");
-
-            entity.HasIndex(e => e.ShopSettingId, "up_users_setting_lnk_ifk");
-
-            entity.HasIndex(e => e.ShopSettingOrd, "up_users_setting_lnk_ofk");
-
-            entity.HasIndex(e => e.UserOrd, "up_users_setting_lnk_oifk");
-
-            entity.HasIndex(e => new { e.UserId, e.ShopSettingId }, "up_users_setting_lnk_uq").IsUnique();
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.ShopSettingId).HasColumnName("shop_setting_id");
-            entity.Property(e => e.ShopSettingOrd).HasColumnName("shop_setting_ord");
-            entity.Property(e => e.UserId).HasColumnName("user_id");
-            entity.Property(e => e.UserOrd).HasColumnName("user_ord");
-
-            entity.HasOne(d => d.ShopSetting).WithMany(p => p.UpUsersSettingLnks)
-                .HasForeignKey(d => d.ShopSettingId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("up_users_setting_lnk_ifk");
-
-            entity.HasOne(d => d.User).WithMany(p => p.UpUsersSettingLnks)
-                .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("up_users_setting_lnk_fk");
         });
 
         modelBuilder.Entity<UploadFolder>(entity =>

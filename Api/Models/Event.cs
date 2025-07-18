@@ -37,6 +37,10 @@ public partial class Event
 
     public virtual ICollection<EventsOwnerLnk> EventsOwnerLnks { get; set; } = new List<EventsOwnerLnk>();
 
+    public virtual ICollection<EventsSubEventsLnk> EventsSubEventsLnkEvents { get; set; } = new List<EventsSubEventsLnk>();
+
+    public virtual ICollection<EventsSubEventsLnk> EventsSubEventsLnkInvEvents { get; set; } = new List<EventsSubEventsLnk>();
+
     public virtual ICollection<EventsVenueLnk> EventsVenueLnks { get; set; } = new List<EventsVenueLnk>();
 
     public virtual AdminUser? UpdatedBy { get; set; }
