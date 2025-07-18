@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "shop_setting_values",
+  "info": {
+    "singularName": "shop-setting-value",
+    "pluralName": "shop-setting-values",
+    "displayName": "ShopSettingValue"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "OptionValue": {
+      "type": "string",
+      "required": true
+    },
+    "shop_setting": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::shop-setting.shop-setting",
+      "inversedBy": "shop_setting_values"
+    },
+    "Owner": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    }
+  }
+}

@@ -70,12 +70,6 @@
       "type": "uid",
       "targetField": "username",
       "required": true
-    },
-    "Setting": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::shop-setting.shop-setting",
-      "inversedBy": "Owner"
     }
   }
 }

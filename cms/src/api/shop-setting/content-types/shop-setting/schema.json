@@ -11,47 +11,33 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "OptionName": {
+    "SettingName": {
       "type": "uid",
-      "required": true
-    },
-    "isNumber": {
-      "type": "boolean",
       "required": true,
-      "default": false
+      "minLength": 3
     },
-    "OptionValue": {
+    "DisplayName": {
       "type": "string",
-      "conditions": {
-        "visible": {
-          "==": [
-            {
-              "var": "isNumber"
-            },
-            false
-          ]
-        }
-      },
-      "required": false
+      "required": true,
+      "unique": false
     },
-    "NumericOption": {
-      "type": "integer",
-      "conditions": {
-        "visible": {
-          "==": [
-            {
-              "var": "isNumber"
-            },
-            true
-          ]
-        }
-      }
+    "Description": {
+      "type": "text",
+      "maxLength": 120
     },
-    "Owner": {
+    "DataType": {
+      "type": "enumeration",
+      "enum": [
+        "String",
+        "Boolean",
+        "Number"
+      ]
+    },
+    "shop_setting_values": {
       "type": "relation",
-      "relation": "manyToMany",
-      "target": "plugin::users-permissions.user",
-      "mappedBy": "Setting"
+      "relation": "oneToMany",
+      "target": "api::shop-setting-value.shop-setting-value",
+      "mappedBy": "shop_setting"
     }
   }
 }

@@ -566,6 +566,7 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
       >;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'Title'> & Schema.Attribute.Required;
+    SubEvents: Schema.Attribute.Relation<'oneToMany', 'api::event.event'>;
     Title: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMaxLength<{
@@ -660,6 +661,43 @@ export interface ApiPaymentPayment extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiShopSettingValueShopSettingValue
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'shop_setting_values';
+  info: {
+    displayName: 'ShopSettingValue';
+    pluralName: 'shop-setting-values';
+    singularName: 'shop-setting-value';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::shop-setting-value.shop-setting-value'
+    > &
+      Schema.Attribute.Private;
+    OptionValue: Schema.Attribute.String & Schema.Attribute.Required;
+    Owner: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    shop_setting: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::shop-setting.shop-setting'
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiShopSettingShopSetting extends Struct.CollectionTypeSchema {
   collectionName: 'shop_settings';
   info: {
@@ -674,23 +712,28 @@ export interface ApiShopSettingShopSetting extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    isNumber: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<false>;
+    DataType: Schema.Attribute.Enumeration<['String', 'Boolean', 'Number']>;
+    Description: Schema.Attribute.Text &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 120;
+      }>;
+    DisplayName: Schema.Attribute.String & Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::shop-setting.shop-setting'
     > &
       Schema.Attribute.Private;
-    NumericOption: Schema.Attribute.Integer;
-    OptionName: Schema.Attribute.UID & Schema.Attribute.Required;
-    OptionValue: Schema.Attribute.String;
-    Owner: Schema.Attribute.Relation<
-      'manyToMany',
-      'plugin::users-permissions.user'
-    >;
     publishedAt: Schema.Attribute.DateTime;
+    SettingName: Schema.Attribute.UID &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        minLength: 3;
+      }>;
+    shop_setting_values: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::shop-setting-value.shop-setting-value'
+    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1219,10 +1262,6 @@ export interface PluginUsersPermissionsUser
       'manyToOne',
       'plugin::users-permissions.role'
     >;
-    Setting: Schema.Attribute.Relation<
-      'manyToMany',
-      'api::shop-setting.shop-setting'
-    >;
     slug: Schema.Attribute.UID<'username'> & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -1253,6 +1292,7 @@ declare module '@strapi/strapi' {
       'api::event.event': ApiEventEvent;
       'api::order.order': ApiOrderOrder;
       'api::payment.payment': ApiPaymentPayment;
+      'api::shop-setting-value.shop-setting-value': ApiShopSettingValueShopSettingValue;
       'api::shop-setting.shop-setting': ApiShopSettingShopSetting;
       'api::venue.venue': ApiVenueVenue;
       'plugin::content-releases.release': PluginContentReleasesRelease;

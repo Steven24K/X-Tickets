@@ -53,6 +53,11 @@
       "relation": "oneToMany",
       "target": "api::event-date-time.event-date-time",
       "mappedBy": "Event"
+    },
+    "SubEvents": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::event.event"
     }
   }
 }
