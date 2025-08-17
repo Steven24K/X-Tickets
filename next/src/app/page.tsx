@@ -101,7 +101,7 @@ export default function Home() {
       })}
     </section>
 
-    <section className="mt-12">
+    <section className="my-12">
       <h2 className="text-2xl font-bold mb-6">Event organizers</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 justify-items-center">
         {[

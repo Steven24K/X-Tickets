@@ -9,13 +9,10 @@ export const NavBar = () => {
             <nav>
                 <ul className="flex space-x-6 lg:text-lg sm:text-base">
                     <li>
-                        <Link href="/" className="hover:underline">Home</Link>
+                        <Link href="/sign-up" className="hover:underline">Sign-up</Link>
                     </li>
                     <li>
-                        <Link href="/about" className="hover:underline">About</Link>
-                    </li>
-                    <li>
-                        <Link href="/contact" className="hover:underline">Contact</Link>
+                        <Link href="/login" className="hover:underline">Login</Link>
                     </li>
                 </ul>
             </nav>
