@@ -70,8 +70,9 @@ export async function Footer() {
             </div>
 
             <div className="mt-8 text-center">
-                <p className="mb-4"><Link href={'https://www.instagram.com/hello_world_my_name_is_steven/'} className="underline">Instagram</Link></p>
-                <p>© {new Date().getFullYear()} - X Tickets - X as in anything</p>
+                <p className="mb-2"><Link href={'https://www.instagram.com/hello_world_my_name_is_steven/'} className="underline">Instagram</Link></p>
+                <p className="mb-2">X Tickets: X as in anything</p>
+                <p className="mb-2">© {new Date().getFullYear()}</p>
             </div>
         </div>
     </footer>

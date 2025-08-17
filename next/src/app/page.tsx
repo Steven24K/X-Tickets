@@ -1,7 +1,11 @@
+import { StrapiClientAdapter } from "@/services/StrapiClient";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Home() {
+
+export default async function Home() {
+  const strapi = new StrapiClientAdapter();
+  const events = await strapi.geAllEvents();
   return <>
     <div className="flex flex-col sm:flex-row items-center gap-4">
       <Image
@@ -30,70 +34,34 @@ export default function Home() {
     </div>
 
     <section className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {[
-        {
-          id: 1,
-          title: "Summer Music Festival",
-          image: "/sample-event.jpeg",
-          date: "2024-07-15",
-          location: "Central Park",
-          time: "18:00",
-          organizer: "MusicLive Inc.",
-        },
-        {
-          id: 2,
-          title: "Tech Conference",
-          image: "/sample-event.jpeg",
-          date: "2024-08-02",
-          location: "Tech Arena",
-          time: "09:30",
-          organizer: "InnovateX",
-        },
-        {
-          id: 3,
-          title: "Art Expo",
-          image: "/sample-event.jpeg",
-          date: "2024-09-10",
-          location: "Gallery Hall",
-          time: "11:00",
-          organizer: "ArtWorld",
-        },
-        {
-          id: 4,
-          title: "Food Carnival",
-          image: "/sample-event.jpeg",
-          date: "2024-10-05",
-          location: "City Square",
-          time: "15:00",
-          organizer: "TasteBuds",
-        },
-      ].map((event) => {
-        const dateObj = new Date(event.date);
+      {events.map((event) => {
+        const dateObj = new Date(event.DatesAndTimes[0].DateTime);
         const dayNames = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
         const monthNames = [
           "Jan", "Feb", "Mar", "Apr", "May", "Jun",
           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
         ];
-        const formattedDate = `${dayNames[dateObj.getDay()]} ${dateObj.getDate()} ${monthNames[dateObj.getMonth()]}`;
+        const formattedDate = `${dayNames[dateObj.getDay()]} ${dateObj.getDate()} ${monthNames[dateObj.getMonth()]} ${dateObj.getFullYear()} at ${dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
         return (
           <div key={event.id} className="overflow-hidden shadow-sm flex flex-col">
             <Image
-              src={event.image}
-              alt={event.title}
-              width={400}
-              height={200}
+              src={event.Image.url}
+              alt={event.Title}
+              width={event.Image.width || 400}
+              height={event.Image.height || 300}
               className="object-cover w-full h-48"
             />
             <div className="p-4 flex-1 flex flex-col">
-              <h2 className="font-semibold text-4xl mb-2">{event.title}</h2>
-              <p className="text-sm text-gray-800 mb-4">Organizer: {event.organizer}</p>
-              <p className="text-lg text-gray-800 mb-1">Date: {formattedDate} at {event.time}</p>
-              <p className="text-md text-gray-800 mb-1">Location: {event.location}</p>
+              <h2 className="font-semibold text-4xl mb-2">{event.Title}</h2>
+              <p className="text-sm text-gray-800 mb-4">By: {event.Owner.username}</p>
+              <p className="text-md text-gray-800 mb-1">Price/ticket: €{event.Price}</p>
+              <p className="text-lg text-gray-800 mb-1">Date: {formattedDate}</p>
+              <p className="text-md text-gray-800 mb-1">Location: {event.Venue.Name}</p>
               <Link
-                href={`/events/${event.id}`}
+                href={`/events/${event.slug}`}
                 className="mt-auto inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors text-center"
               >
-                View Details
+                More info
               </Link>
             </div>
           </div>
