@@ -579,6 +579,52 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
+  collectionName: 'homepages';
+  info: {
+    displayName: 'Homepage';
+    pluralName: 'homepages';
+    singularName: 'homepage';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Blocks: Schema.Attribute.DynamicZone<
+      ['blocks.text-block', 'blocks.image', 'blocks.hero']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 1;
+        },
+        number
+      >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    Description: Schema.Attribute.Text &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 120;
+      }>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::homepage.homepage'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    Title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 54;
+      }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
   collectionName: 'orders';
   info: {
@@ -614,6 +660,46 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
         },
         number
       >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPagePage extends Struct.CollectionTypeSchema {
+  collectionName: 'pages';
+  info: {
+    displayName: 'Page';
+    pluralName: 'pages';
+    singularName: 'page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Blocks: Schema.Attribute.DynamicZone<
+      ['blocks.text-block', 'blocks.hero', 'blocks.image']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 1;
+        },
+        number
+      >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    Description: Schema.Attribute.Text &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 120;
+      }>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::page.page'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'Title'> & Schema.Attribute.Required;
+    Title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1290,7 +1376,9 @@ declare module '@strapi/strapi' {
       'api::discount-code.discount-code': ApiDiscountCodeDiscountCode;
       'api::event-date-time.event-date-time': ApiEventDateTimeEventDateTime;
       'api::event.event': ApiEventEvent;
+      'api::homepage.homepage': ApiHomepageHomepage;
       'api::order.order': ApiOrderOrder;
+      'api::page.page': ApiPagePage;
       'api::payment.payment': ApiPaymentPayment;
       'api::shop-setting-value.shop-setting-value': ApiShopSettingValueShopSettingValue;
       'api::shop-setting.shop-setting': ApiShopSettingShopSetting;

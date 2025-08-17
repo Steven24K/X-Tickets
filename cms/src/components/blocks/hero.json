@@ -1,0 +1,38 @@
+{
+  "collectionName": "components_blocks_heroes",
+  "info": {
+    "displayName": "Hero",
+    "icon": "feather"
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string",
+      "required": true
+    },
+    "Description": {
+      "type": "text",
+      "maxLength": 120,
+      "required": false
+    },
+    "Image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "PrimaryButton": {
+      "type": "component",
+      "component": "buttons.link",
+      "repeatable": false,
+      "required": false
+    },
+    "SecondaryButton": {
+      "type": "component",
+      "component": "buttons.link",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}

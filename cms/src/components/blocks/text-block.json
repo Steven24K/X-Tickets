@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_blocks_text_blocks",
+  "info": {
+    "displayName": "Text",
+    "icon": "feather"
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "Content": {
+      "type": "blocks",
+      "required": true
+    }
+  },
+  "config": {}
+}
