@@ -13,8 +13,11 @@ export const SideBar = () => {
                     onClick={() => setMenuOpen((open) => !open)}
                     aria-label="Open menu"
                 >
-                    <span className="text-2xl">
+                    <span className="relative inline-block text-2xl">
                         <FontAwesomeIcon icon={faShoppingCart} />
+                        <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5 min-w-[1.2em] text-center">
+                            6
+                        </span>
                     </span>
                 </button>
             )}
