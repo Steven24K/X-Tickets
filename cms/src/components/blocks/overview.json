@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_blocks_overviews",
+  "info": {
+    "displayName": "Overview",
+    "icon": "grid"
+  },
+  "options": {},
+  "attributes": {
+    "Entity": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "Events",
+        "Owners"
+      ]
+    },
+    "Size": {
+      "type": "integer",
+      "required": true,
+      "default": 10,
+      "min": 1
+    },
+    "Paginated": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    }
+  },
+  "config": {}
+}

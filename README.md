@@ -11,3 +11,13 @@
 - .NET 8
 - EF Core 
 
+## TODO: 
+- Render pages based on slug
+- FormBuilder
+    - Sign-up Form: Using custom endpoint
+    - Login Form
+- Footer and Navigation content in CMS
+- Shopping cart functionality
+- Checkout Form
+    - Custom create order endpoint
+    - Payment provider integration

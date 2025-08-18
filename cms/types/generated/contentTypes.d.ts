@@ -591,7 +591,7 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
   };
   attributes: {
     Blocks: Schema.Attribute.DynamicZone<
-      ['blocks.text-block', 'blocks.image', 'blocks.hero']
+      ['blocks.text-block', 'blocks.image', 'blocks.hero', 'blocks.overview']
     > &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMax<
@@ -678,7 +678,7 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
   };
   attributes: {
     Blocks: Schema.Attribute.DynamicZone<
-      ['blocks.text-block', 'blocks.hero', 'blocks.image']
+      ['blocks.text-block', 'blocks.hero', 'blocks.image', 'blocks.overview']
     > &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMax<
@@ -1341,6 +1341,7 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
+    ProfilePicture: Schema.Attribute.Media<'images'>;
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     resetPasswordToken: Schema.Attribute.String & Schema.Attribute.Private;

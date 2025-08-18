@@ -3,3 +3,46 @@
 .cursor-pointer:hover {
     cursor: pointer;
 }
+
+.text-base {
+    h1 {
+        font-size: 2.25rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    h2 {
+        font-size: 1.75rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+
+    p {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        line-height: 1.6;
+    }
+
+    a {
+        color: #2563eb;
+        text-decoration: underline;
+        transition: color 0.2s;
+        &:hover {
+            color: #1d4ed8;
+        }
+    }
+
+    b, strong {
+        font-weight: 700;
+    }
+
+    i, em {
+        font-style: italic;
+    }
+}

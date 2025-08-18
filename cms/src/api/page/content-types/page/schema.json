@@ -29,7 +29,8 @@
       "components": [
         "blocks.text-block",
         "blocks.hero",
-        "blocks.image"
+        "blocks.image",
+        "blocks.overview"
       ],
       "required": true,
       "min": 1

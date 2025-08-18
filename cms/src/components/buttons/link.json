@@ -12,7 +12,37 @@
     },
     "Url": {
       "type": "string",
-      "required": true
+      "conditions": {
+        "visible": {
+          "!=": [
+            {
+              "var": "Internal"
+            },
+            true
+          ]
+        }
+      },
+      "required": false
+    },
+    "InternalUrl": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::page.page",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "Internal"
+            },
+            true
+          ]
+        }
+      }
+    },
+    "Internal": {
+      "type": "boolean",
+      "required": true,
+      "default": false
     }
   },
   "config": {}

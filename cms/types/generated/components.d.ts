@@ -30,6 +30,30 @@ export interface BlocksImage extends Struct.ComponentSchema {
   };
 }
 
+export interface BlocksOverview extends Struct.ComponentSchema {
+  collectionName: 'components_blocks_overviews';
+  info: {
+    displayName: 'Overview';
+    icon: 'grid';
+  };
+  attributes: {
+    Entity: Schema.Attribute.Enumeration<['Events', 'Owners']> &
+      Schema.Attribute.Required;
+    Paginated: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<false>;
+    Size: Schema.Attribute.Integer &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 1;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<10>;
+  };
+}
+
 export interface BlocksTextBlock extends Struct.ComponentSchema {
   collectionName: 'components_blocks_text_blocks';
   info: {
@@ -49,8 +73,12 @@ export interface ButtonsLink extends Struct.ComponentSchema {
     icon: 'link';
   };
   attributes: {
+    Internal: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<false>;
+    InternalUrl: Schema.Attribute.Relation<'oneToOne', 'api::page.page'>;
     Title: Schema.Attribute.String & Schema.Attribute.Required;
-    Url: Schema.Attribute.String & Schema.Attribute.Required;
+    Url: Schema.Attribute.String;
   };
 }
 
@@ -59,6 +87,7 @@ declare module '@strapi/strapi' {
     export interface ComponentSchemas {
       'blocks.hero': BlocksHero;
       'blocks.image': BlocksImage;
+      'blocks.overview': BlocksOverview;
       'blocks.text-block': BlocksTextBlock;
       'buttons.link': ButtonsLink;
     }
