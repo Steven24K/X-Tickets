@@ -12,7 +12,6 @@
 - EF Core 
 
 ## TODO: 
-- Render pages based on slug
 - FormBuilder
     - Sign-up Form: Using custom endpoint
     - Login Form
@@ -22,5 +21,5 @@
     - Custom create order endpoint
     - Payment provider integration
 - Error Handling
-    - API requests to CMS
+    - ErrorBoundary component
     - 404 pages
