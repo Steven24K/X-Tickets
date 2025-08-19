@@ -21,3 +21,6 @@
 - Checkout Form
     - Custom create order endpoint
     - Payment provider integration
+- Error Handling
+    - API requests to CMS
+    - 404 pages

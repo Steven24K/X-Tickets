@@ -6,7 +6,7 @@ import { Footer } from "@/components/Footer";
 import "./globals.scss";
 
 export const metadata: Metadata = {
-  title: "X Tickets",
+  title: " - X Tickets",
   description: "Selling tickets for your next event made easy.",
 };
 

@@ -9,7 +9,7 @@ export interface BlocksHero extends Struct.ComponentSchema {
   attributes: {
     Description: Schema.Attribute.Text &
       Schema.Attribute.SetMinMaxLength<{
-        maxLength: 120;
+        maxLength: 1200;
       }>;
     Image: Schema.Attribute.Media<'images'>;
     PrimaryButton: Schema.Attribute.Component<'buttons.link', false>;

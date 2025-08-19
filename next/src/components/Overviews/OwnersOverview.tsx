@@ -6,10 +6,10 @@ import Link from "next/link"
 export const OwnersOverview = async (props: OverviewProps) => {
   const strapi = new StrapiClientAdapter();
   const entries = await strapi.getAllEventOwners();
-
+  if (entries.kind == 'r') return 'Error while fetching'
   return <section className="my-12 px-1">
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 justify-items-center">
-      {entries.map(e => (
+      {entries.v.map(e => (
         <Link
           key={e.id}
           href={`/organizers/${e.slug}`}

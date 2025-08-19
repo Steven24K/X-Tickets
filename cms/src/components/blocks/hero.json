@@ -12,7 +12,7 @@
     },
     "Description": {
       "type": "text",
-      "maxLength": 120,
+      "maxLength": 1200,
       "required": false
     },
     "Image": {

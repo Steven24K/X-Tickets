@@ -11,11 +11,12 @@ export const EventOverview = async (props: OverviewProps) => {
     const pageIndex = (await pageProps.searchParams).page
     const strapi = new StrapiClientAdapter();
     const entries = await strapi.getAllEvents(convertNumber(pageIndex), Size);
+    if (entries.kind == 'r') return 'Error while fetching'
 
-    const pageData = entries.meta.pagination
+    const pageData = entries.v.meta.pagination
 
     return <section className="px-1 my-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {entries.data.map((event) => {
+        {entries.v.data.map((event) => {
             const dateObj = new Date(event.DatesAndTimes[0].DateTime);
             const dayNames = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
             const monthNames = [

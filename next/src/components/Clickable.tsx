@@ -10,7 +10,7 @@ export const Clickable = (props: ClickableProps & ClickablePropsExtra) => {
     const { Title, Url, InternalUrl, Internal, className, children } = props;
     return <Link
         aria-label={Title}
-        target={Internal ? "_self" : "_blank"}
+        target={(Internal || Url == '/') ? "_self" : "_blank"}
         href={Internal ? InternalUrl.slug : Url}
         className={className}
     >
