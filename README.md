@@ -12,9 +12,8 @@
 - EF Core 
 
 ## TODO: 
-- FormBuilder
-    - Sign-up Form: Using custom endpoint
-    - Login Form
+- Sign-up Form: Using custom endpoint
+- Login Form + endpoint
 - Footer and Navigation content in CMS
 - Shopping cart functionality
 - Checkout Form
