@@ -12,8 +12,6 @@ export default async function CMSPage(props: PageProps) {
     const page = await strapi.getPageBySlug(slug)
 
     if (page.kind == 'r') notFound()
-
-    console.log(page.v)
         
     const title = page.v.Title
     const description = page.v.Description
