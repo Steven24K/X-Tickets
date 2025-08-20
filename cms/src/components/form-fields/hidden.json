@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_form_fields_hiddens",
+  "info": {
+    "displayName": "Hidden",
+    "icon": "alien"
+  },
+  "options": {},
+  "attributes": {
+    "Label": {
+      "type": "string",
+      "required": true
+    },
+    "Name": {
+      "type": "string",
+      "required": true
+    },
+    "DefaultValue": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "config": {}
+}

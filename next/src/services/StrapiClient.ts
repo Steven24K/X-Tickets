@@ -5,7 +5,7 @@ export class StrapiClientAdapter {
 
     private client: StrapiClient;
 
-    private blocksPopulator = ['Blocks', 'Blocks.Image', 'Blocks.PrimaryButton', 'Blocks.SecondaryButton', 'Blocks.PrimaryButton.InternalUrl', 'Blocks.SecondaryButton.InternalUrl']
+    private blocksPopulator = ['Blocks', 'Blocks.Image', 'Blocks.PrimaryButton', 'Blocks.SecondaryButton', 'Blocks.PrimaryButton.InternalUrl', 'Blocks.SecondaryButton.InternalUrl', 'Blocks.form', 'Blocks.form.Fields', 'Blocks.form.Fields.Items']
 
     constructor() {
         this.client = strapi({

@@ -27,7 +27,8 @@
         "form-fields.email",
         "form-fields.drop-down",
         "form-fields.date-picker",
-        "form-fields.check-box"
+        "form-fields.check-box",
+        "form-fields.hidden"
       ],
       "required": true,
       "min": 1

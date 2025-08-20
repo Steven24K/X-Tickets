@@ -164,6 +164,19 @@ export interface FormFieldsEmail extends Struct.ComponentSchema {
   };
 }
 
+export interface FormFieldsHidden extends Struct.ComponentSchema {
+  collectionName: 'components_form_fields_hiddens';
+  info: {
+    displayName: 'Hidden';
+    icon: 'alien';
+  };
+  attributes: {
+    DefaultValue: Schema.Attribute.String & Schema.Attribute.Required;
+    Label: Schema.Attribute.String & Schema.Attribute.Required;
+    Name: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface FormFieldsInfo extends Struct.ComponentSchema {
   collectionName: 'components_form_fields_infos';
   info: {
@@ -294,6 +307,7 @@ declare module '@strapi/strapi' {
       'form-fields.date-picker': FormFieldsDatePicker;
       'form-fields.drop-down': FormFieldsDropDown;
       'form-fields.email': FormFieldsEmail;
+      'form-fields.hidden': FormFieldsHidden;
       'form-fields.info': FormFieldsInfo;
       'form-fields.number': FormFieldsNumber;
       'form-fields.password': FormFieldsPassword;

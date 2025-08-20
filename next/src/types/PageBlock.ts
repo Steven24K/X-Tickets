@@ -1,12 +1,14 @@
 import { PageProps } from "@/app/RouteParams"
 import { StrapiImage } from "./StrapiImage"
 import { BlocksContent } from "@strapi/blocks-react-renderer"
+import { StrapiFormField } from "./FormFields"
 
 export type PageBlock = (
-    TextBlockProps | 
-    HeroBlockProps | 
-    ImageBlockProps | 
-    OverviewBlockProps
+    TextBlockProps |
+    HeroBlockProps |
+    ImageBlockProps |
+    OverviewBlockProps | 
+    FormBlockProps
 )
     & {
         pageProps: PageProps
@@ -28,7 +30,7 @@ export type ImageBlockProps = {
 }
 
 export type ClickableProps = {
-    Title: string 
+    Title: string
     Url: string
     InternalUrl: {
         slug: string
@@ -40,7 +42,7 @@ export type HeroBlockProps = {
     __component: "blocks.hero"
     id: number
     Title: string
-    Description: string 
+    Description: string
     Image: StrapiImage
     PrimaryButton: ClickableProps
     SecondaryButton: ClickableProps
@@ -52,4 +54,19 @@ export type OverviewBlockProps = {
     Entity: 'Events' | 'Owners'
     Paginated: boolean
     Size: number
+}
+
+export type FormBlockProps = {
+    __component: "blocks.form"
+    id: number
+    form: {
+        id: number
+        documentId: string
+        Title: string
+        SubmitButton: string
+        SubmitText: string
+        SubmitAction: string
+        RedirectUrl?: string
+        Fields: StrapiFormField[]
+    }
 }

@@ -605,6 +605,7 @@ export interface ApiFormForm extends Struct.CollectionTypeSchema {
         'form-fields.drop-down',
         'form-fields.date-picker',
         'form-fields.check-box',
+        'form-fields.hidden',
       ]
     > &
       Schema.Attribute.Required &
