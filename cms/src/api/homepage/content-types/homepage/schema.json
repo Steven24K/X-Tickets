@@ -26,7 +26,8 @@
         "blocks.text-block",
         "blocks.image",
         "blocks.hero",
-        "blocks.overview"
+        "blocks.overview",
+        "blocks.form"
       ],
       "required": true,
       "min": 1

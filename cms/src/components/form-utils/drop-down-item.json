@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_form_utils_drop_down_items",
+  "info": {
+    "displayName": "DropDown Item",
+    "icon": "plus"
+  },
+  "options": {},
+  "attributes": {
+    "Label": {
+      "type": "string",
+      "required": true
+    },
+    "Value": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "config": {}
+}

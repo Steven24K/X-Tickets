@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_form_fields_drop_downs",
+  "info": {
+    "displayName": "DropDown",
+    "icon": "bulletList"
+  },
+  "options": {},
+  "attributes": {
+    "Label": {
+      "type": "string",
+      "required": true
+    },
+    "Name": {
+      "type": "string",
+      "required": true
+    },
+    "Items": {
+      "type": "component",
+      "component": "form-utils.drop-down-item",
+      "repeatable": true,
+      "required": true,
+      "min": 1
+    },
+    "Required": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    }
+  },
+  "config": {}
+}

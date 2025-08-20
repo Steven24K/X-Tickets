@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_form_fields_infos",
+  "info": {
+    "displayName": "Info",
+    "icon": "information"
+  },
+  "options": {},
+  "attributes": {
+    "Message": {
+      "type": "text",
+      "required": true
+    }
+  },
+  "config": {}
+}

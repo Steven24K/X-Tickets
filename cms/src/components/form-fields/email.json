@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_form_fields_emails",
+  "info": {
+    "displayName": "Email",
+    "icon": "envelop"
+  },
+  "options": {},
+  "attributes": {
+    "Label": {
+      "type": "string",
+      "required": true
+    },
+    "Name": {
+      "type": "string",
+      "required": true
+    },
+    "Required": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "DefaultValue": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

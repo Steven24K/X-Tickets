@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_form_fields_text_areas",
+  "info": {
+    "displayName": "TextArea",
+    "icon": "write"
+  },
+  "options": {},
+  "attributes": {
+    "Label": {
+      "type": "string",
+      "required": true
+    },
+    "Name": {
+      "type": "string",
+      "required": true
+    },
+    "Required": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "DefaultValue": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

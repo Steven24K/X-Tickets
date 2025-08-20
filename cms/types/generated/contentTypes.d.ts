@@ -579,6 +579,62 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiFormForm extends Struct.CollectionTypeSchema {
+  collectionName: 'forms';
+  info: {
+    displayName: 'Form';
+    pluralName: 'forms';
+    singularName: 'form';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    Fields: Schema.Attribute.DynamicZone<
+      [
+        'form-fields.time-select',
+        'form-fields.text',
+        'form-fields.text-area',
+        'form-fields.password',
+        'form-fields.number',
+        'form-fields.info',
+        'form-fields.email',
+        'form-fields.drop-down',
+        'form-fields.date-picker',
+        'form-fields.check-box',
+      ]
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 1;
+        },
+        number
+      >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::form.form'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    RedirectUrl: Schema.Attribute.String;
+    SubmitAction: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'/api/submit/'>;
+    SubmitButton: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'Submit'>;
+    SubmitText: Schema.Attribute.Text &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'Thanks for filling in the form.'>;
+    Title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
   collectionName: 'homepages';
   info: {
@@ -591,7 +647,13 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
   };
   attributes: {
     Blocks: Schema.Attribute.DynamicZone<
-      ['blocks.text-block', 'blocks.image', 'blocks.hero', 'blocks.overview']
+      [
+        'blocks.text-block',
+        'blocks.image',
+        'blocks.hero',
+        'blocks.overview',
+        'blocks.form',
+      ]
     > &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMax<
@@ -678,7 +740,13 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
   };
   attributes: {
     Blocks: Schema.Attribute.DynamicZone<
-      ['blocks.text-block', 'blocks.hero', 'blocks.image', 'blocks.overview']
+      [
+        'blocks.text-block',
+        'blocks.hero',
+        'blocks.image',
+        'blocks.overview',
+        'blocks.form',
+      ]
     > &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMax<
@@ -1377,6 +1445,7 @@ declare module '@strapi/strapi' {
       'api::discount-code.discount-code': ApiDiscountCodeDiscountCode;
       'api::event-date-time.event-date-time': ApiEventDateTimeEventDateTime;
       'api::event.event': ApiEventEvent;
+      'api::form.form': ApiFormForm;
       'api::homepage.homepage': ApiHomepageHomepage;
       'api::order.order': ApiOrderOrder;
       'api::page.page': ApiPagePage;
