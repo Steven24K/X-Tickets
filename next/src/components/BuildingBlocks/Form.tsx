@@ -13,7 +13,7 @@ export const FormBlock = async (block: PageBlock) => {
         submitted = successSubmitted === 'true'
     }
 
-    return <div className="px-2 mb-4">
+    return <div className="px-2 my-4">
         <h1 className="pb-2 text-4xl">{Title}</h1>
         {submitted && <p className="bg-gray-100 rounded p-5">{SubmitText}</p>}
         {!submitted && <FormBuilder
