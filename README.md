@@ -12,7 +12,9 @@
 - EF Core 
 
 ## TODO: 
-- Sign-up Form: Using custom endpoint
+- Sign-up
+    - Create custom page for event organizers
+    - Redirect to event organizers page after sign-up (middleware)
 - Login Form + endpoint
 - Footer and Navigation content in CMS
 - Shopping cart functionality

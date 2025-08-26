@@ -7,7 +7,9 @@ export const FormBlock = async (block: PageBlock) => {
     const { form, pageProps } = block
     const { documentId, Title, Fields, SubmitButton, SubmitText, SubmitAction } = form
 
-    const successSubmitted = (await pageProps.searchParams).success
+    const searchParams = await pageProps.searchParams
+    const successSubmitted = searchParams.success
+    const error = searchParams.error
     let submitted = false
     if (successSubmitted) {
         submitted = successSubmitted === 'true'
@@ -16,6 +18,7 @@ export const FormBlock = async (block: PageBlock) => {
     return <div className="px-2 my-4">
         <h1 className="pb-2 text-4xl">{Title}</h1>
         {submitted && <p className="bg-gray-100 rounded p-5">{SubmitText}</p>}
+        {error && <p className="bg-red-100 text-red-800 rounded p-2 my-1 max-w-md">{error}</p>}
         {!submitted && <FormBuilder
             method="post"
             action={`${SubmitAction}?form_id=${documentId}`}

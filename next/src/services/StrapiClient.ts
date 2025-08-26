@@ -1,4 +1,5 @@
 import { Either, EitherA, EitherB } from '@/types/Func';
+import { StrapiUser } from '@/types/models/StrapiUser';
 import { API, strapi, StrapiClient } from '@strapi/client';
 
 export class StrapiClientAdapter {
@@ -52,7 +53,7 @@ export class StrapiClientAdapter {
         const response = await this.client.collection('pages').find({
             populate: this.blocksPopulator,
             filters: {
-                slug: {$eq: _slug}
+                slug: { $eq: _slug }
             }
         })
             .then(d => {
@@ -61,5 +62,35 @@ export class StrapiClientAdapter {
             })
             .catch(() => EitherB<API.Document, Error>(new Error('Request failed')))
         return response
+    }
+
+    public async getFormById(id: string): Promise<Either<API.Document, Error>> {
+        const response = await this.client.collection('forms').findOne(id, {
+            populate: ['Fields', 'Fields.Items'],
+        })
+            .then(d => EitherA<API.Document, Error>(d.data))
+            .catch(() => EitherB<API.Document, Error>(new Error('Request failed')))
+        return response
+    }
+
+    public async createUser(data: StrapiUser): Promise<Either<API.Document, Error>> {
+        const response = await this.client.fetch('/users', {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'POST',
+            body: JSON.stringify(data),
+        })
+
+        let body = await response.json()
+        if (response.ok) return EitherA<API.Document, Error>(body)
+
+        let msg = body?.error?.message || 'User creation failed'
+        if (body?.error?.details && body?.error?.details?.errors) {
+            msg += body.error.details.errors.reduce((acc: string, error: any) => {
+                return acc + ` - ${error.message}`
+            }, '')
+        }
+        return EitherB<API.Document, Error>(new Error(msg))
     }
 }

@@ -5,6 +5,7 @@ type RouteParams = {
 type QueryParams = {
     page?: string
     success?: string
+    error?: string
 }
 
 export type PageProps = {
