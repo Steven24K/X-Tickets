@@ -14,7 +14,7 @@ export const OwnersOverview = async (props: OverviewProps) => {
         .map(e => (
           <Link
             key={e.id}
-            href={`/organizers/${e.slug}`}
+            href={`/organizer/${e.slug}`}
             className="flex flex-col items-center group"
           >
             <Image

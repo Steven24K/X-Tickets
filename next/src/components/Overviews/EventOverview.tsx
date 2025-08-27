@@ -1,4 +1,4 @@
-import { convertNumber } from "@/app/utils";
+import { convertNumber, formatDateTime } from "@/app/utils";
 import { StrapiClientAdapter } from "@/services/StrapiClient";
 import { OverviewProps } from "@/types/OverviewProps";
 import Image from "next/image";
@@ -17,13 +17,7 @@ export const EventOverview = async (props: OverviewProps) => {
 
     return <section className="px-1 my-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {entries.v.data.map((event) => {
-            const dateObj = new Date(event.DatesAndTimes[0].DateTime);
-            const dayNames = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
-            const monthNames = [
-                "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-            ];
-            const formattedDate = `${dayNames[dateObj.getDay()]} ${dateObj.getDate()} ${monthNames[dateObj.getMonth()]} ${dateObj.getFullYear()} at ${dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+            let formattedDate = formatDateTime(event.DatesAndTimes[0]?.StartDate || event.publishedAt)
             return (
                 <div key={event.id} className="overflow-hidden shadow-sm flex flex-col">
                     <Image
@@ -37,7 +31,7 @@ export const EventOverview = async (props: OverviewProps) => {
                         <h2 className="font-semibold text-4xl mb-2">{event.Title}</h2>
                         <p className="text-sm text-gray-800 mb-4">By: {event.Owner.username}</p>
                         <p className="text-md text-gray-800 mb-1">Price/ticket: €{event.Price}</p>
-                        <p className="text-lg text-gray-800 mb-1">Date: {formattedDate}</p>
+                        <p className="text-lg text-gray-800 mb-1">Date: {formattedDate[0]} at {formattedDate[1]}</p>
                         <p className="text-md text-gray-800 mb-1">Location: {event.Venue.Name}</p>
                         <Link
                             href={`/events/${event.slug}`}

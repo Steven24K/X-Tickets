@@ -93,4 +93,20 @@ export class StrapiClientAdapter {
         }
         return EitherB<API.Document, Error>(new Error(msg))
     }
+
+    public async getEventOwnerBySlug(slug: string): Promise<Either<API.Document, Error>> {
+        const response = await this.client.collection('users').find({
+            populate: ["ProfilePicture", 'Events', 'Events.Image', 'Events.Venue', 'Events.DatesAndTimes'],
+            filters: {
+                slug: { $eq: slug },
+            },
+        })
+            .then((d: any) => {
+                if (d.length == 0) return EitherB<API.Document, Error>(new Error('No results'))
+                return EitherA<API.Document, Error>(d[0])
+            })
+            .catch(() => EitherB<API.Document, Error>(new Error('Request failed')))
+        return response
+    }
+
 }

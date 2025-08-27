@@ -13,8 +13,19 @@
 
 ## TODO: 
 - Sign-up
-    - Create custom page for event organizers
     - Redirect to event organizers page after sign-up (middleware)
+    - Register session after succesfull sign-up, re-use logic for login
+- Event profile page - authorized layout
+    - update username/page handle
+    - upload profile picture 
+    - upload banner image
+    - create new event
+    - edit event 
+    - delete event
+    - link to settings page
+- Settings page - authorized users
+ - View a list of available settings
+ - Update setting value
 - Login Form + endpoint
 - Footer and Navigation content in CMS
 - Shopping cart functionality
