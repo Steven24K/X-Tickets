@@ -15,7 +15,6 @@ export default async function OrganizerProfilePage(props: PageProps) {
     const eventOwner = await strapi.getEventOwnerBySlug(slug)
     if (eventOwner.kind == 'r') notFound()
 
-    console.log(eventOwner.v)
     return (
         <div>
             <div className="max-w-300 mx-auto">

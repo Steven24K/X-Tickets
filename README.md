@@ -12,9 +12,6 @@
 - EF Core 
 
 ## TODO: 
-- Sign-up
-    - Redirect to event organizers page after sign-up (middleware)
-    - Register session after succesfull sign-up, re-use logic for login
 - Event profile page - authorized layout
     - update username/page handle
     - upload profile picture 
@@ -23,6 +20,7 @@
     - edit event 
     - delete event
     - link to settings page
+    - Security: Make sure users can only add/edit/delete content from their own profile
 - Settings page - authorized users
  - View a list of available settings
  - Update setting value

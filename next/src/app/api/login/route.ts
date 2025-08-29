@@ -1,5 +1,6 @@
 import { formValidationFlow } from "@/app/utils"
 import { StrapiClientAdapter } from "@/services/StrapiClient"
+import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 
 export async function POST(request: Request) {
@@ -18,10 +19,13 @@ export async function POST(request: Request) {
 
     if (result.kind == 'r') redirect(`${referer.pathname}?error=Please fill in the required fields&success=false`)
 
-    let response = await strapi.createUser(result.v as any)
+    let response = await strapi.loginAsUser(result.v as any)
 
     if (response.kind == 'r') redirect(`${referer.pathname}?error=${response.v.message}&success=false`)
-
+    
+     let _cookies = await cookies()
+     _cookies.set('token', response.v)
+        
     if (form.v.RedirectUrl) redirect(form.v.RedirectUrl)
     redirect(`${referer.pathname}?success=true`)
 }

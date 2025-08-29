@@ -1,6 +1,7 @@
-import { Either, EitherA, EitherB } from '@/types/Func';
+import { Either, IsLeft, IsRight } from '@/types/Func';
 import { StrapiUser } from '@/types/models/StrapiUser';
 import { API, strapi, StrapiClient } from '@strapi/client';
+import { StrapiAuthUser } from './StrapiAuthUser';
 
 export class StrapiClientAdapter {
 
@@ -19,8 +20,8 @@ export class StrapiClientAdapter {
         const response = await this.client.single('homepage').find({
             populate: this.blocksPopulator,
         })
-            .then(d => EitherA<API.DocumentResponse, Error>(d))
-            .catch(() => EitherB<API.DocumentResponse, Error>(new Error('Request failed')))
+            .then(d => IsLeft<API.DocumentResponse, Error>(d))
+            .catch(() => IsRight<API.DocumentResponse, Error>(new Error('Request failed')))
 
         return response;
     }
@@ -34,8 +35,8 @@ export class StrapiClientAdapter {
                 withCount: true,
             }
         })
-            .then(d => EitherA<API.DocumentResponseCollection, Error>(d))
-            .catch(() => EitherB<API.DocumentResponseCollection, Error>(new Error('Request failed')))
+            .then(d => IsLeft<API.DocumentResponseCollection, Error>(d))
+            .catch(() => IsRight<API.DocumentResponseCollection, Error>(new Error('Request failed')))
         return response;
     }
 
@@ -43,8 +44,8 @@ export class StrapiClientAdapter {
         const response = await this.client.collection('users').find({
             populate: ["ProfilePicture"]
         })
-            .then((d: any) => EitherA<any[], Error>(d))
-            .catch(() => EitherB<any[], Error>(new Error('Request failed')))
+            .then((d: any) => IsLeft<any[], Error>(d))
+            .catch(() => IsRight<any[], Error>(new Error('Request failed')))
         return response;
     }
 
@@ -57,10 +58,10 @@ export class StrapiClientAdapter {
             }
         })
             .then(d => {
-                if (d.data.length == 0) return EitherB<API.Document, Error>(new Error('Request failed'))
-                return EitherA<API.Document, Error>(d.data[0])
+                if (d.data.length == 0) return IsRight<API.Document, Error>(new Error('Request failed'))
+                return IsLeft<API.Document, Error>(d.data[0])
             })
-            .catch(() => EitherB<API.Document, Error>(new Error('Request failed')))
+            .catch(() => IsRight<API.Document, Error>(new Error('Request failed')))
         return response
     }
 
@@ -68,11 +69,12 @@ export class StrapiClientAdapter {
         const response = await this.client.collection('forms').findOne(id, {
             populate: ['Fields', 'Fields.Items'],
         })
-            .then(d => EitherA<API.Document, Error>(d.data))
-            .catch(() => EitherB<API.Document, Error>(new Error('Request failed')))
+            .then(d => IsLeft<API.Document, Error>(d.data))
+            .catch(() => IsRight<API.Document, Error>(new Error('Request failed')))
         return response
     }
 
+    // TODO: Use /auth/local/register
     public async createUser(data: StrapiUser): Promise<Either<API.Document, Error>> {
         const response = await this.client.fetch('/users', {
             headers: {
@@ -83,7 +85,7 @@ export class StrapiClientAdapter {
         })
 
         let body = await response.json()
-        if (response.ok) return EitherA<API.Document, Error>(body)
+        if (response.ok) return IsLeft<API.Document, Error>(body)
 
         let msg = body?.error?.message || 'User creation failed'
         if (body?.error?.details && body?.error?.details?.errors) {
@@ -91,7 +93,7 @@ export class StrapiClientAdapter {
                 return acc + ` - ${error.message}`
             }, '')
         }
-        return EitherB<API.Document, Error>(new Error(msg))
+        return IsRight<API.Document, Error>(new Error(msg))
     }
 
     public async getEventOwnerBySlug(slug: string): Promise<Either<API.Document, Error>> {
@@ -102,10 +104,39 @@ export class StrapiClientAdapter {
             },
         })
             .then((d: any) => {
-                if (d.length == 0) return EitherB<API.Document, Error>(new Error('No results'))
-                return EitherA<API.Document, Error>(d[0])
+                if (d.length == 0) return IsRight<API.Document, Error>(new Error('No results'))
+                return IsLeft<API.Document, Error>(d[0])
             })
-            .catch(() => EitherB<API.Document, Error>(new Error('Request failed')))
+            .catch(() => IsRight<API.Document, Error>(new Error('Request failed')))
+        return response
+    }
+
+    public async loginAsUser(data: StrapiAuthUser): Promise<Either<string, Error>> {
+        const response = await this.client.fetch('/auth/local', {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'POST',
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(json => IsLeft<string, Error>(json.jwt))
+        .catch(() => IsRight<string, Error>(new Error('Login failed')))
+
+        return response
+    }
+
+    // BUG: Fetch in Strapi Client overides Authorization header
+    public async getCurrentUser(token: string): Promise<Either<API.Document, Error>> {
+        const response = await fetch(process.env.STRAPI_URL + '/api/users/me', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => response.json())
+        .then(json => IsLeft<API.Document, Error>(json))
+        .catch(() => IsRight<API.Document, Error>(new Error('No user logged in')))
+
         return response
     }
 
