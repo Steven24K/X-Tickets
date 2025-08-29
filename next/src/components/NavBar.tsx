@@ -1,17 +1,9 @@
-import { StrapiClientAdapter } from "@/services/StrapiClient"
-import { IsRight } from "@/types/Func"
-import { API } from "@strapi/client"
-import { cookies } from "next/headers"
+import { getCurrentUser } from "@/app/utils"
 import Link from "next/link"
 
 export const NavBar = async () => {
-    const strapi = new StrapiClientAdapter()
-    let _cookies = await cookies()
-    let maybeUser = IsRight<API.Document, Error>(new Error('No user'))
-    if (_cookies.has('token')) {
-        let token = _cookies.get('token')!.value
-        maybeUser = await strapi.getCurrentUser(token)
-    }
+    const user = await getCurrentUser();
+
     return <header className="bg-gray-800 text-white py-2 px-4">
         <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold">
@@ -20,13 +12,13 @@ export const NavBar = async () => {
             <nav>
                 <ul className="flex space-x-6 lg:text-lg sm:text-base">
                     {
-                        maybeUser.kind == 'l' ? <>
-                        <li>
-                            <Link href="/profile" className="hover:underline">Welcome {maybeUser.v.username}</Link>
-                        </li>
-                        <li>
-                            <Link href="/logout" className="hover:underline">Logout</Link>
-                        </li>
+                        user.kind == 'l' ? <>
+                            <li>
+                                <Link href={`/organizer/${user.v.slug}`} className="hover:underline">Welcome {user.v.username}</Link>
+                            </li>
+                            <li>
+                                <a href="/logout" className="hover:underline">Logout</a>
+                            </li>
                         </>
                             : <>
                                 <li>

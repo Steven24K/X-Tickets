@@ -24,8 +24,10 @@ export async function POST(request: Request) {
     if (response.kind == 'r') redirect(`${referer.pathname}?error=${response.v.message}&success=false`)
     
      let _cookies = await cookies()
-     _cookies.set('token', response.v)
-        
-    if (form.v.RedirectUrl) redirect(form.v.RedirectUrl)
+     _cookies.set('token', response.v.jwt)
+     let user = response.v.user
+    
+
+    if (form.v.RedirectUrl) redirect(form.v.RedirectUrl.replace('{slug}', user.slug))
     redirect(`${referer.pathname}?success=true`)
 }

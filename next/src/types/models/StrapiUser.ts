@@ -1,5 +1,5 @@
 export interface StrapiUser {
-    organization_name: string;
+    username: string;
     email: string;
     password: string;
 }

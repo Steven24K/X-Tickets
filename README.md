@@ -33,3 +33,4 @@
 - Error Handling
     - ErrorBoundary component
     - 404 pages
+    - Types for Strapi client

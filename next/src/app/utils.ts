@@ -1,5 +1,7 @@
+import { StrapiClientAdapter } from "@/services/StrapiClient";
 import { Either, IsLeft, IsRight, Product } from "@/types/Func";
 import { API } from "@strapi/client";
+import { cookies } from "next/headers";
 
 export const convertNumber = (page: any) => isNaN(Number(page)) ? 1 : Number(page);
 
@@ -32,3 +34,26 @@ export const formValidationFlow = (form: API.Document) => (formData: FormData): 
     if (!allFieldsFilled || hiddenFieldsChanged) return IsRight(false)
     return IsLeft(transformFormData(formData))
 };
+
+
+export const slugify = (str: string): string => {
+    return str
+        .toLowerCase()
+        .normalize('NFD') // Remove accents
+        .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+        .replace(/[^a-z0-9\s-]/g, '') // Remove non-alphanumeric except spaces and hyphens
+        .replace(/\s+/g, '-') // Replace spaces with hyphens
+        .replace(/-+/g, '-') // Replace multiple hyphens with one
+        .replace(/^-+|-+$/g, ''); // Trim hyphens from start/end
+};
+
+export const getCurrentUser = async () => {
+      const strapi = new StrapiClientAdapter()
+      let _cookies = await cookies()
+      let maybeUser = IsRight<API.Document, Error>(new Error('No user'))
+      if (_cookies.has('token')) {
+        let token = _cookies.get('token')!.value
+        maybeUser = await strapi.getCurrentUser(token)
+      }
+      return maybeUser
+}

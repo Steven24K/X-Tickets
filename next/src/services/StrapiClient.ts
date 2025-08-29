@@ -2,6 +2,7 @@ import { Either, IsLeft, IsRight } from '@/types/Func';
 import { StrapiUser } from '@/types/models/StrapiUser';
 import { API, strapi, StrapiClient } from '@strapi/client';
 import { StrapiAuthUser } from './StrapiAuthUser';
+import { slugify } from '@/app/utils';
 
 export class StrapiClientAdapter {
 
@@ -81,7 +82,7 @@ export class StrapiClientAdapter {
                 'Content-Type': 'application/json',
             },
             method: 'POST',
-            body: JSON.stringify(data),
+            body: JSON.stringify({...data, slug: slugify(data.username)}),
         })
 
         let body = await response.json()
@@ -111,7 +112,7 @@ export class StrapiClientAdapter {
         return response
     }
 
-    public async loginAsUser(data: StrapiAuthUser): Promise<Either<string, Error>> {
+    public async loginAsUser(data: StrapiAuthUser): Promise<Either<any, Error>> {
         const response = await this.client.fetch('/auth/local', {
             headers: {
                 'Content-Type': 'application/json',
@@ -120,8 +121,8 @@ export class StrapiClientAdapter {
             body: JSON.stringify(data),
         })
         .then(response => response.json())
-        .then(json => IsLeft<string, Error>(json.jwt))
-        .catch(() => IsRight<string, Error>(new Error('Login failed')))
+        .then(json => IsLeft<any, Error>(json))
+        .catch(() => IsRight<any, Error>(new Error('Login failed')))
 
         return response
     }
@@ -137,6 +138,18 @@ export class StrapiClientAdapter {
         .then(json => IsLeft<API.Document, Error>(json))
         .catch(() => IsRight<API.Document, Error>(new Error('No user logged in')))
 
+        return response
+    }
+
+    public async updateUser(id: string, data: Partial<StrapiUser>): Promise<Either<API.Document, Error>> {
+        const response = await this.client.collection('users').update(id, {
+            data: {
+                ...data,
+                slug: data.username ? slugify(data.username) : undefined
+            }
+        })
+            .then(d => IsLeft<API.Document, Error>(d.data))
+            .catch(() => IsRight<API.Document, Error>(new Error('Request failed')))
         return response
     }
 

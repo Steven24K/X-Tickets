@@ -22,6 +22,8 @@ export async function POST(request: Request) {
 
     if (response.kind == 'r') redirect(`${referer.pathname}?error=${response.v.message}&success=false`)
 
+    // TODO: Authorize user directly and redirect to profile page 
+
     if (form.v.RedirectUrl) redirect(form.v.RedirectUrl)
     redirect(`${referer.pathname}?success=true`)
 }

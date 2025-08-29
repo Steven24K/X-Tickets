@@ -73,6 +73,13 @@
         "images"
       ]
     },
+    "Banner": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
     "slug": {
       "type": "uid",
       "targetField": "username",

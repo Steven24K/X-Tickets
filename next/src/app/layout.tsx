@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: "Selling tickets for your next event made easy.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
