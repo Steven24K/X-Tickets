@@ -32,7 +32,7 @@ export default async function OrganizerProfilePage(props: PageProps) {
                         defaultImage="/banner.avif"
                         userId={eventOwner.v.id}
                         imageUrl={eventOwner.v.Banner?.url}
-                        isOwner />
+                        isOwner={isOwner} />
                     <div className="absolute left-8 -bottom-16 flex items-center">
                         <div className="relative">
                             <ImageUploader
@@ -44,7 +44,7 @@ export default async function OrganizerProfilePage(props: PageProps) {
                                 defaultImage="/profile.avif"
                                 userId={eventOwner.v.id}
                                 imageUrl={eventOwner.v.ProfilePicture?.url}
-                                isOwner
+                                isOwner={isOwner}
                             />
                         </div>
                     </div>
