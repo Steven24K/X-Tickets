@@ -1,4 +1,4 @@
-import { getCurrentUser } from "@/app/utils"
+import { getCurrentUser } from "@/app/utils.server";
 import Link from "next/link"
 
 export const NavBar = async () => {

@@ -1,5 +1,7 @@
 import { PageProps } from "@/app/RouteParams";
-import { formatDateTime, getCurrentUser } from "@/app/utils";
+import { formatDateTime } from "@/app/utils";
+import { getCurrentUser } from "@/app/utils.server";
+import { ProfilePicture } from "@/components/ProfilePicture";
 import { StrapiClientAdapter } from "@/services/StrapiClient";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,7 +17,6 @@ export default async function OrganizerProfilePage(props: PageProps) {
     if (eventOwner.kind == 'r') notFound()
 
     const user = await getCurrentUser();
-    console.log(user)
     const isOwner = user.kind == 'l' && user.v.slug === slug
 
     return (
@@ -38,23 +39,7 @@ export default async function OrganizerProfilePage(props: PageProps) {
                         </form>
                     )}
                     <div className="absolute left-8 -bottom-16 flex items-center">
-                        <div className="relative">
-                            <Image
-                                src={eventOwner.v.ProfilePicture ? eventOwner.v.ProfilePicture.url : "/profile.avif"}
-                                alt="Organizer"
-                                className="w-32 h-32 rounded-full border-4 border-white object-cover shadow-lg"
-                                height={128}
-                                width={128}
-                            />
-                            {isOwner && (
-                                <form>
-                                    <label className="absolute bottom-2 right-2 bg-black bg-opacity-60 text-white px-2 py-1 rounded cursor-pointer text-xs z-10">
-                                        Edit Photo
-                                        <input type="file" accept="image/*" className="hidden" />
-                                    </label>
-                                </form>
-                            )}
-                        </div>
+                        <ProfilePicture userId={eventOwner.v.id} imageUrl={eventOwner.v.ProfilePicture?.url} isOwner/>
                     </div>
                     <div className="ml-40 flex flex-wrap items-center gap-4 mt-2">
                         {isOwner ? (

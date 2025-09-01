@@ -39,10 +39,10 @@ type RepeatField = GenericFormField & {
 type InfoText = { id: number, kind: 'info'; name: string, weight: number }
 
 
-interface FieldRendererProps<T> {
+interface FieldRendererProps {
     field: FormField
 }
-export function FieldRenderer<T>(props: FieldRendererProps<T>) {
+export function FieldRenderer(props: FieldRendererProps) {
     const { field } = props
     switch (field.kind) {
         case 'date':
@@ -143,12 +143,9 @@ interface FormBuilderProps {
     action: string
     method: 'get' | 'post'
 }
-export function FormBuilder<T>(props: FormBuilderProps) {
+export function FormBuilder(props: FormBuilderProps) {
     const { fields, isDisabled, noSubmit, submitBtnText, action, method } = props
-    return <form className="max-w-lg space-y-6"
-        // Eventually use server actions
-        action={action} method={method} 
-    >
+    return <form className="max-w-lg space-y-6" action={action} method={method}>
         {
             fields.sort((a, b) => a.weight - b.weight)
                 .map(field => <FieldRenderer key={`${field.id}_${field.name}_${field.kind}`} field={field} />)

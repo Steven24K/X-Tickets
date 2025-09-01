@@ -82,7 +82,7 @@ export class StrapiClientAdapter {
                 'Content-Type': 'application/json',
             },
             method: 'POST',
-            body: JSON.stringify({...data, slug: slugify(data.username)}),
+            body: JSON.stringify({ ...data, slug: slugify(data.username) }),
         })
 
         let body = await response.json()
@@ -120,9 +120,9 @@ export class StrapiClientAdapter {
             method: 'POST',
             body: JSON.stringify(data),
         })
-        .then(response => response.json())
-        .then(json => IsLeft<any, Error>(json))
-        .catch(() => IsRight<any, Error>(new Error('Login failed')))
+            .then(response => response.json())
+            .then(json => IsLeft<any, Error>(json))
+            .catch(() => IsRight<any, Error>(new Error('Login failed')))
 
         return response
     }
@@ -134,20 +134,53 @@ export class StrapiClientAdapter {
                 'Authorization': `Bearer ${token}`
             }
         })
-        .then(response => response.json())
-        .then(json => IsLeft<API.Document, Error>(json))
-        .catch(() => IsRight<API.Document, Error>(new Error('No user logged in')))
+            .then(response => response.json())
+            .then(json => IsLeft<API.Document, Error>(json))
+            .catch(() => IsRight<API.Document, Error>(new Error('No user logged in')))
 
         return response
     }
 
-    public async updateUser(id: string, data: Partial<StrapiUser>): Promise<Either<API.Document, Error>> {
-        const response = await this.client.collection('users').update(id, {
-            data: {
+    public async uploadFile(file: string): Promise<Either<API.Document, Error>> {
+        const formData = new FormData();
+        // Convert base64 string to a Buffer and append as a Blob/File
+        const matches = file.match(/^data:(.+);base64,(.+)$/);
+        if (!matches) throw new Error('Invalid base64 file string');
+        const mimeType = matches[1];
+        const base64Data = matches[2];
+        const byteCharacters = atob(base64Data);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: mimeType });
+        formData.append('files', blob, `profile-picture-${Date.now().toLocaleString()}.` + mimeType.split('/')[1]);
+
+        const response = await this.client.fetch('/upload', {
+            method: 'POST',
+            body: formData,
+        })
+            .then(response => response.json())
+            .then(json => IsLeft<API.Document, Error>(json))
+            .catch(() => IsRight<API.Document, Error>(new Error('Upload failed')))
+
+        return response
+    }
+
+    public async updateUser(user_token: string, id: string, data: Partial<StrapiUser>): Promise<Either<API.Document, Error>> {
+        const response = await fetch(process.env.STRAPI_URL + `/api/users/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${user_token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
                 ...data,
                 slug: data.username ? slugify(data.username) : undefined
-            }
+            })
         })
+            .then(response => response.ok ? response.json() : Promise.reject())
             .then(d => IsLeft<API.Document, Error>(d.data))
             .catch(() => IsRight<API.Document, Error>(new Error('Request failed')))
         return response

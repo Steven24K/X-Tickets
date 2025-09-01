@@ -4,9 +4,11 @@ export type Either<a, b> = Sum<a, b>
 export const IsLeft = <a, b>(_v: a): Either<a, b> => ({ kind: 'l', v: _v })
 export const IsRight = <a, b>(_v: b): Either<a, b> => ({ kind: 'r', v: _v })
 
-export type Option<a> = Sum<a, false>
-export const Some = <a>(_v: a): Option<a> => ({ kind: 'l', v: _v })
-export const None = <a>(): Option<a> => ({ kind: 'r', v: false })
+export type Option<a> = Sum<a, false> & {
+    visit: <b>(onSome: (_: a) => b, onNone: () => b) => b
+}
+export const Some = <a>(_v: a): Option<a> => ({ kind: 'l', v: _v, visit: (onSome, onNone) => onSome(_v) })
+export const None = <a>(): Option<a> => ({ kind: 'r', v: false, visit: (onSome, onNone) => onNone() })
 
 export type Product<a, b> = [a, b]
 export const Tuple = <a, b>(_a: a, _b: b): Product<a, b> => ([_a, _b])
