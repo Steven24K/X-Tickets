@@ -72,7 +72,7 @@ export const ImageUploader = (props: ImageUploaderProps) => {
 
     return <>
         <Image
-            src={state.imageContent.visit(url => url, () => imageUrl ? imageUrl : "/profile.avif")}
+            src={state.imageContent.visit(url => url, () => imageUrl ? imageUrl : defaultImage)}
             alt="Organizer"
             className={imgClassName}
             height={height}
