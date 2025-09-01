@@ -12,6 +12,9 @@
 - EF Core 
 
 ## TODO: 
+- Modal
+    - Modal window
+    - Modal trigger (Use React Context for this one)
 - Event profile page - authorized layout
     - create new event modal
     - edit event 
