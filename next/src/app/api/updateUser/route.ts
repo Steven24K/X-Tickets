@@ -8,9 +8,10 @@ export async function POST(request: Request) {
     let token = _cookies.get('token')!.value
 
     const body = await request.json()
+    
     const strapi = new StrapiClientAdapter()
 
-    const response = await strapi.updateUser(token, body.id, { ProfilePicture: body.imageId })
+    const response = await strapi.updateUser(token, body.id, body.data)
     if (response.kind === "l") {
         return NextResponse.json('ok')
     }

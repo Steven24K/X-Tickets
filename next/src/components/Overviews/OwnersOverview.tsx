@@ -20,8 +20,8 @@ export const OwnersOverview = async (props: OverviewProps) => {
             <Image
               src={e.ProfilePicture.url}
               alt={e.username}
-              width={e.ProfilePicture.width}
-              height={e.ProfilePicture.height}
+              width={240}
+              height={240}
               className="rounded-full object-cover border-2 border-gray-400 group-hover:border-gray-700 transition-all"
             />
             <span className="mt-2 text-base font-medium text-gray-700 text-center">{e.username}</span>

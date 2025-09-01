@@ -13,10 +13,7 @@
 
 ## TODO: 
 - Event profile page - authorized layout
-    - update username/page handle
-    - upload profile picture 
-    - upload banner image
-    - create new event
+    - create new event modal
     - edit event 
     - delete event
     - link to settings page
@@ -24,7 +21,6 @@
 - Settings page - authorized users
  - View a list of available settings
  - Update setting value
-- Login Form + endpoint
 - Footer and Navigation content in CMS
 - Shopping cart functionality
 - Checkout Form

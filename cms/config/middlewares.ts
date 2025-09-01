@@ -9,11 +9,11 @@ export default [
    {
     name: "strapi::body",
     config: {
-      formLimit: "512mb", // modify form body
-      jsonLimit: "512mb", // modify JSON body
-      textLimit: "512mb", // modify text body
+      formLimit: "4gb", // modify form body
+      jsonLimit: "4gb", // modify JSON body
+      textLimit: "4gb", // modify text body
       formidable: {
-        maxFileSize: 200 * 1024 * 1024, // multipart data, modify here limit of uploaded file size
+        maxFileSize: 1024 * 1024 * 1024, // multipart data, modify here limit of uploaded file size
       },
     },
   },

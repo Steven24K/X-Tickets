@@ -1,7 +1,7 @@
 import { PageProps } from "@/app/RouteParams";
 import { formatDateTime } from "@/app/utils";
 import { getCurrentUser } from "@/app/utils.server";
-import { ProfilePicture } from "@/components/ProfilePicture";
+import { ImageUploader } from "@/components/ImageUploader";
 import { StrapiClientAdapter } from "@/services/StrapiClient";
 import Image from "next/image";
 import Link from "next/link";
@@ -23,33 +23,42 @@ export default async function OrganizerProfilePage(props: PageProps) {
         <div>
             <div className="max-w-300 mx-auto">
                 <div className="relative h-60 bg-gray-200">
-                    <Image
-                        src={eventOwner.v.Banner ? eventOwner.v.Banner.url : "/banner.avif"}
+                    <ImageUploader
+                        entity="Banner"
+                        imgClassName="w-full h-full object-cover"
+                        editClassName="absolute top-2 right-2 bg-black bg-opacity-50 text-white px-3 py-1 rounded cursor-pointer text-sm z-10"
                         height={100}
                         width={320}
-                        alt="Banner"
-                        className="w-full h-full object-cover"
-                    />
-                    {isOwner && (
-                        <form>
-                            <label className="absolute top-2 right-2 bg-black bg-opacity-50 text-white px-3 py-1 rounded cursor-pointer text-sm z-10">
-                                Edit Banner
-                                <input type="file" accept="image/*" className="hidden" />
-                            </label>
-                        </form>
-                    )}
+                        defaultImage="/banner.avif"
+                        userId={eventOwner.v.id}
+                        imageUrl={eventOwner.v.Banner?.url}
+                        isOwner />
                     <div className="absolute left-8 -bottom-16 flex items-center">
-                        <ProfilePicture userId={eventOwner.v.id} imageUrl={eventOwner.v.ProfilePicture?.url} isOwner/>
+                        <div className="relative">
+                            <ImageUploader
+                                entity="ProfilePicture"
+                                imgClassName="w-32 h-32 bg-white rounded-full border-4 border-white object-cover shadow-lg"
+                                editClassName="absolute bottom-2 left-4 bg-black bg-opacity-60 text-white px-2 py-1 rounded cursor-pointer text-xs z-10"
+                                height={128}
+                                width={128}
+                                defaultImage="/profile.avif"
+                                userId={eventOwner.v.id}
+                                imageUrl={eventOwner.v.ProfilePicture?.url}
+                                isOwner
+                            />
+                        </div>
                     </div>
                     <div className="ml-40 flex flex-wrap items-center gap-4 mt-2">
                         {isOwner ? (
-                            <form className="flex flex-wrap items-center gap-2">
+                            <form className="flex flex-wrap items-center gap-2" method="post" action='/api/updateUserForm'>
                                 <input
+                                    name='username'
                                     type="text"
                                     defaultValue={eventOwner.v.username}
                                     className="text-xl font-bold border-b border-gray-300 focus:outline-none focus:border-blue-500 bg-transparent"
                                     style={{ maxWidth: 200 }}
                                 />
+                                <input type='hidden' name="id" value={eventOwner.v.id} />
                                 <button
                                     type="submit"
                                     className="text-blue-600 text-sm font-semibold hover:underline"
@@ -146,11 +155,6 @@ export default async function OrganizerProfilePage(props: PageProps) {
                                                     <form
                                                         action={`/event/${event.slug}/delete`}
                                                         method="POST"
-                                                        onSubmit={e => {
-                                                            if (!confirm("Are you sure you want to delete this event?")) {
-                                                                e.preventDefault();
-                                                            }
-                                                        }}
                                                     >
                                                         <button
                                                             type="submit"

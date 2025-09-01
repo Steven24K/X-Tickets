@@ -99,7 +99,7 @@ export class StrapiClientAdapter {
 
     public async getEventOwnerBySlug(slug: string): Promise<Either<API.Document, Error>> {
         const response = await this.client.collection('users').find({
-            populate: ["ProfilePicture", 'Events', 'Events.Image', 'Events.Venue', 'Events.DatesAndTimes'],
+            populate: ["ProfilePicture", "Banner", 'Events', 'Events.Image', 'Events.Venue', 'Events.DatesAndTimes'],
             filters: {
                 slug: { $eq: slug },
             },
@@ -175,10 +175,7 @@ export class StrapiClientAdapter {
                 'Authorization': `Bearer ${user_token}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                ...data,
-                slug: data.username ? slugify(data.username) : undefined
-            })
+            body: JSON.stringify(data)
         })
             .then(response => response.ok ? response.json() : Promise.reject())
             .then(d => IsLeft<API.Document, Error>(d.data))
