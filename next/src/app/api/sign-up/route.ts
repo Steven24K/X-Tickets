@@ -20,7 +20,7 @@ export async function POST(request: Request) {
 
     let response = await strapi.createUser(result.v as any)
 
-    if (response.kind == 'r') redirect(`${referer.pathname}?error=${response.v.message}&success=false`)
+    if (response.kind == 'r') redirect(`${referer.pathname}?error=${response.v}&success=false`)
 
     // TODO: Authorize user directly and redirect to profile page 
 

@@ -1,13 +1,16 @@
 "use client"
-import { Suspense } from "react";
-import { getCurrentUser } from "@/app/api";
 import { AuthContext } from "./AuthContext";
+import { StrapiShopOwner } from "@/types/models/StrapiCollections";
+import { ApiResponse } from "@/services/StrapiClient";
 
+interface ContextProviderProps {
+    children?: React.ReactNode
+    currentUser: ApiResponse<StrapiShopOwner>
+}
 
-export function ContextProvider({ children }: { children: React.ReactNode }) {
-    return <AuthContext value={getCurrentUser()}>
-        <Suspense>
-            {children}
-        </Suspense>
+export function ContextProvider(props: ContextProviderProps) {
+    const { children, currentUser } = props
+    return <AuthContext value={currentUser}>
+        {children}
     </AuthContext>;
 }

@@ -5,4 +5,4 @@ import { ApiResponse } from "@/services/StrapiClient"
 import { IsRight } from "@/types/Func"
 import { StrapiShopOwner } from "@/types/models/StrapiCollections"
 
-export const AuthContext = createContext<Promise<ApiResponse<StrapiShopOwner>>>(Promise.resolve(IsRight("Unloaded")))
+export const AuthContext = createContext<ApiResponse<StrapiShopOwner>>(IsRight("Unloaded"))

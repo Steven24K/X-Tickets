@@ -5,7 +5,6 @@ import { use, useContext } from "react"
 
 export const NavBar = () => {
     const user = useContext(AuthContext)
-    const _user = use(user)
 
     return <header className="bg-gray-800 text-white py-2 px-4">
         <div className="flex items-center justify-between">
@@ -15,9 +14,9 @@ export const NavBar = () => {
             <nav>
                 <ul className="flex space-x-6 lg:text-lg sm:text-base">
                     {
-                        _user.kind == 'l' ? <>
+                        user.kind == 'l' ? <>
                             <li>
-                                <Link href={`/organizer/${_user.v.slug}`} className="hover:underline">Welcome {_user.v.username}</Link>
+                                <Link href={`/organizer/${user.v.slug}`} className="hover:underline">Welcome {user.v.username}</Link>
                             </li>
                             <li>
                                 <a href="/logout" className="hover:underline">Logout</a>

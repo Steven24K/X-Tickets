@@ -4,7 +4,7 @@ import { AuthContext } from "@/contexts/AuthContext"
 import { ApiResponse } from "@/services/StrapiClient"
 import { StrapiShopOwner } from "@/types/models/StrapiCollections"
 import Link from "next/link"
-import { use, useContext } from "react"
+import { useContext } from "react"
 
 interface ShopOwnerInfoProps {
     slug: string
@@ -16,9 +16,8 @@ export const ShopOwnerInfo = (props: ShopOwnerInfoProps) => {
     if (eventOwner.kind == 'r') return <div>Failed to load owner info</div>
     
     const user = useContext(AuthContext)
-    const _user = use(user)
 
-    const isOwner = _user.kind == 'l' && _user.v.slug === slug
+    const isOwner = user.kind == 'l' && user.v.slug === slug
 
     return <div className="ml-40 flex flex-wrap items-center gap-4 mt-2">
         {isOwner ? (

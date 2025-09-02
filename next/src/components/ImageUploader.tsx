@@ -2,7 +2,7 @@
 import { AuthContext } from "@/contexts/AuthContext"
 import { None, Option, Some } from "@/types/Func"
 import Image from "next/image"
-import { use, useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 
 interface ImageUploaderProps {
     userId: string
@@ -28,9 +28,8 @@ export const ImageUploader = (props: ImageUploaderProps) => {
     const [state, setState] = useState<ImageUploaderState>({ imageContent: None(), uploadStatus: 'not-uploaded' })
 
     const user = useContext(AuthContext)
-    const _user = use(user)
 
-    const isOwner = _user.kind == 'l' && _user.v.slug === slug
+    const isOwner = user.kind == 'l' && user.v.slug === slug
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];

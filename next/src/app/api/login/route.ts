@@ -21,7 +21,7 @@ export async function POST(request: Request) {
 
     let response = await strapi.loginAsUser(result.v as any)
 
-    if (response.kind == 'r') redirect(`${referer.pathname}?error=${response.v.message}&success=false`)
+    if (response.kind == 'r') redirect(`${referer.pathname}?error=${response.v}&success=false`)
     
      let _cookies = await cookies()
      _cookies.set('token', response.v.jwt)
