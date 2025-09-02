@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_blocks_authorizes",
+  "info": {
+    "displayName": "Authorize",
+    "icon": "lock"
+  },
+  "options": {},
+  "attributes": {
+    "AllowPublic": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    }
+  },
+  "config": {}
+}

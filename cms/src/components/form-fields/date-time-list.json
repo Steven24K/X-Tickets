@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_form_fields_date_time_lists",
+  "info": {
+    "displayName": "DateTimeList",
+    "icon": "bulletList"
+  },
+  "options": {},
+  "attributes": {
+    "Label": {
+      "type": "string",
+      "required": true
+    },
+    "Name": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "config": {}
+}

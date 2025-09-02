@@ -31,7 +31,8 @@
         "blocks.hero",
         "blocks.image",
         "blocks.overview",
-        "blocks.form"
+        "blocks.form",
+        "blocks.authorize"
       ],
       "required": true,
       "min": 1

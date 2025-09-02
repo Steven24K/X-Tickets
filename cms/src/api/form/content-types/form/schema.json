@@ -28,7 +28,10 @@
         "form-fields.drop-down",
         "form-fields.date-picker",
         "form-fields.check-box",
-        "form-fields.hidden"
+        "form-fields.hidden",
+        "form-fields.file",
+        "form-fields.date-time-list",
+        "form-fields.venue-field"
       ],
       "required": true,
       "min": 1

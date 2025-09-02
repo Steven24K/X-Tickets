@@ -606,6 +606,9 @@ export interface ApiFormForm extends Struct.CollectionTypeSchema {
         'form-fields.date-picker',
         'form-fields.check-box',
         'form-fields.hidden',
+        'form-fields.file',
+        'form-fields.date-time-list',
+        'form-fields.venue-field',
       ]
     > &
       Schema.Attribute.Required &
@@ -747,6 +750,7 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
         'blocks.image',
         'blocks.overview',
         'blocks.form',
+        'blocks.authorize',
       ]
     > &
       Schema.Attribute.Required &

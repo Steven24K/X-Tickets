@@ -1,5 +1,18 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface BlocksAuthorize extends Struct.ComponentSchema {
+  collectionName: 'components_blocks_authorizes';
+  info: {
+    displayName: 'Authorize';
+    icon: 'lock';
+  };
+  attributes: {
+    AllowPublic: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<false>;
+  };
+}
+
 export interface BlocksForm extends Struct.ComponentSchema {
   collectionName: 'components_blocks_forms';
   info: {
@@ -125,6 +138,18 @@ export interface FormFieldsDatePicker extends Struct.ComponentSchema {
   };
 }
 
+export interface FormFieldsDateTimeList extends Struct.ComponentSchema {
+  collectionName: 'components_form_fields_date_time_lists';
+  info: {
+    displayName: 'DateTimeList';
+    icon: 'bulletList';
+  };
+  attributes: {
+    Label: Schema.Attribute.String & Schema.Attribute.Required;
+    Name: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface FormFieldsDropDown extends Struct.ComponentSchema {
   collectionName: 'components_form_fields_drop_downs';
   info: {
@@ -156,6 +181,21 @@ export interface FormFieldsEmail extends Struct.ComponentSchema {
   };
   attributes: {
     DefaultValue: Schema.Attribute.String;
+    Label: Schema.Attribute.String & Schema.Attribute.Required;
+    Name: Schema.Attribute.String & Schema.Attribute.Required;
+    Required: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<false>;
+  };
+}
+
+export interface FormFieldsFile extends Struct.ComponentSchema {
+  collectionName: 'components_form_fields_files';
+  info: {
+    displayName: 'File';
+    icon: 'file';
+  };
+  attributes: {
     Label: Schema.Attribute.String & Schema.Attribute.Required;
     Name: Schema.Attribute.String & Schema.Attribute.Required;
     Required: Schema.Attribute.Boolean &
@@ -282,6 +322,21 @@ export interface FormFieldsTimeSelect extends Struct.ComponentSchema {
   };
 }
 
+export interface FormFieldsVenueField extends Struct.ComponentSchema {
+  collectionName: 'components_form_fields_venue_fields';
+  info: {
+    displayName: 'Venue Field';
+    icon: 'cog';
+  };
+  attributes: {
+    Label: Schema.Attribute.String & Schema.Attribute.Required;
+    Name: Schema.Attribute.String & Schema.Attribute.Required;
+    Required: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<false>;
+  };
+}
+
 export interface FormUtilsDropDownItem extends Struct.ComponentSchema {
   collectionName: 'components_form_utils_drop_down_items';
   info: {
@@ -297,6 +352,7 @@ export interface FormUtilsDropDownItem extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
+      'blocks.authorize': BlocksAuthorize;
       'blocks.form': BlocksForm;
       'blocks.hero': BlocksHero;
       'blocks.image': BlocksImage;
@@ -305,8 +361,10 @@ declare module '@strapi/strapi' {
       'buttons.link': ButtonsLink;
       'form-fields.check-box': FormFieldsCheckBox;
       'form-fields.date-picker': FormFieldsDatePicker;
+      'form-fields.date-time-list': FormFieldsDateTimeList;
       'form-fields.drop-down': FormFieldsDropDown;
       'form-fields.email': FormFieldsEmail;
+      'form-fields.file': FormFieldsFile;
       'form-fields.hidden': FormFieldsHidden;
       'form-fields.info': FormFieldsInfo;
       'form-fields.number': FormFieldsNumber;
@@ -314,6 +372,7 @@ declare module '@strapi/strapi' {
       'form-fields.text': FormFieldsText;
       'form-fields.text-area': FormFieldsTextArea;
       'form-fields.time-select': FormFieldsTimeSelect;
+      'form-fields.venue-field': FormFieldsVenueField;
       'form-utils.drop-down-item': FormUtilsDropDownItem;
     }
   }
