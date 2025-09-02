@@ -1,8 +1,12 @@
 import { Either, IsLeft, IsRight } from '@/types/Func';
-import { StrapiUser } from '@/types/models/StrapiUser';
+import { StrapiUserRequestBody } from '@/types/models/StrapiPayloads';
 import { API, strapi, StrapiClient } from '@strapi/client';
 import { StrapiAuthUser } from './StrapiAuthUser';
 import { slugify } from '@/app/utils';
+import { StrapiEvent, StrapiForm, StrapiHomePage, StrapiPage, StrapiShopOwner } from '@/types/models/StrapiCollections';
+
+type ErrorMessage = string
+export type ApiResponse<T> = Either<T, ErrorMessage>
 
 export class StrapiClientAdapter {
 
@@ -17,17 +21,17 @@ export class StrapiClientAdapter {
         });
     }
 
-    public async getHomepage(): Promise<Either<API.DocumentResponse, Error>> {
+    public async getHomepage(): Promise<ApiResponse<StrapiHomePage>> {
         const response = await this.client.single('homepage').find({
             populate: this.blocksPopulator,
         })
-            .then(d => IsLeft<API.DocumentResponse, Error>(d))
-            .catch(() => IsRight<API.DocumentResponse, Error>(new Error('Request failed')))
+            .then((d: any) => IsLeft<StrapiHomePage, string>(d))
+            .catch(() => IsRight<StrapiHomePage, string>('Request failed'))
 
         return response;
     }
 
-    public async getAllEvents(page = 1, pageSize = 10): Promise<Either<API.DocumentResponseCollection, Error>> {
+    public async getAllEvents(page = 1, pageSize = 10): Promise<ApiResponse<StrapiEvent[] & API.DocumentResponseCollection>> {
         const response = await this.client.collection('events').find({
             populate: ['Image', 'Owner', 'DatesAndTimes', 'SubEvents', 'Venue'],
             pagination: {
@@ -36,21 +40,22 @@ export class StrapiClientAdapter {
                 withCount: true,
             }
         })
-            .then(d => IsLeft<API.DocumentResponseCollection, Error>(d))
-            .catch(() => IsRight<API.DocumentResponseCollection, Error>(new Error('Request failed')))
+            .then((d: any) => IsLeft<StrapiEvent[] & API.DocumentResponseCollection, string>(d))
+            .catch(() => IsRight<StrapiEvent[] & API.DocumentResponseCollection, string>('Request failed'))
+
         return response;
     }
 
-    public async getAllEventOwners(): Promise<Either<any[], Error>> {
+    public async getAllEventOwners(): Promise<ApiResponse<StrapiShopOwner[]>> {
         const response = await this.client.collection('users').find({
             populate: ["ProfilePicture"]
         })
-            .then((d: any) => IsLeft<any[], Error>(d))
-            .catch(() => IsRight<any[], Error>(new Error('Request failed')))
+            .then((d: any) => IsLeft<StrapiShopOwner[], string>(d))
+            .catch(() => IsRight<StrapiShopOwner[], string>('Request failed'))
         return response;
     }
 
-    public async getPageBySlug(_slug: string): Promise<Either<API.Document, Error>> {
+    public async getPageBySlug(_slug: string): Promise<ApiResponse<StrapiPage>> {
         // Feature request Strapi Client: Use slug in findOne instead of only documentID
         const response = await this.client.collection('pages').find({
             populate: this.blocksPopulator,
@@ -58,25 +63,26 @@ export class StrapiClientAdapter {
                 slug: { $eq: _slug }
             }
         })
-            .then(d => {
-                if (d.data.length == 0) return IsRight<API.Document, Error>(new Error('Request failed'))
-                return IsLeft<API.Document, Error>(d.data[0])
+            .then((d: any) => {
+                if (d.data.length == 0) return IsRight<StrapiPage, string>('Request failed')
+                return IsLeft<StrapiPage, string>(d.data[0])
             })
-            .catch(() => IsRight<API.Document, Error>(new Error('Request failed')))
+            .catch(() => IsRight<StrapiPage, string>('Request failed'))
+
         return response
     }
 
-    public async getFormById(id: string): Promise<Either<API.Document, Error>> {
+    public async getFormById(id: string): Promise<ApiResponse<StrapiForm>> {
         const response = await this.client.collection('forms').findOne(id, {
             populate: ['Fields', 'Fields.Items'],
         })
-            .then(d => IsLeft<API.Document, Error>(d.data))
-            .catch(() => IsRight<API.Document, Error>(new Error('Request failed')))
+            .then((d: any) => IsLeft<StrapiForm, string>(d.data))
+            .catch(() => IsRight<StrapiForm, string>('Request failed'))
         return response
     }
 
     // TODO: Use /auth/local/register
-    public async createUser(data: StrapiUser): Promise<Either<API.Document, Error>> {
+    public async createUser(data: StrapiUserRequestBody): Promise<ApiResponse<API.Document>> {
         const response = await this.client.fetch('/users', {
             headers: {
                 'Content-Type': 'application/json',
@@ -86,18 +92,18 @@ export class StrapiClientAdapter {
         })
 
         let body = await response.json()
-        if (response.ok) return IsLeft<API.Document, Error>(body)
+        if (response.ok) return IsLeft<API.Document, string>(body)
 
         let msg = body?.error?.message || 'User creation failed'
         if (body?.error?.details && body?.error?.details?.errors) {
             msg += body.error.details.errors.reduce((acc: string, error: any) => {
                 return acc + ` - ${error.message}`
-            }, '')
+            }, '');
         }
-        return IsRight<API.Document, Error>(new Error(msg))
+        return IsRight<API.Document, string>(msg);
     }
 
-    public async getEventOwnerBySlug(slug: string): Promise<Either<API.Document, Error>> {
+    public async getEventOwnerBySlug(slug: string): Promise<ApiResponse<StrapiShopOwner>> {
         const response = await this.client.collection('users').find({
             populate: ["ProfilePicture", "Banner", 'Events', 'Events.Image', 'Events.Venue', 'Events.DatesAndTimes'],
             filters: {
@@ -105,14 +111,14 @@ export class StrapiClientAdapter {
             },
         })
             .then((d: any) => {
-                if (d.length == 0) return IsRight<API.Document, Error>(new Error('No results'))
-                return IsLeft<API.Document, Error>(d[0])
+                if (d.length == 0) return IsRight<StrapiShopOwner, string>('No results')
+                return IsLeft<StrapiShopOwner, string>(d[0])
             })
-            .catch(() => IsRight<API.Document, Error>(new Error('Request failed')))
+            .catch(() => IsRight<StrapiShopOwner, string>('Request failed'))
         return response
     }
 
-    public async loginAsUser(data: StrapiAuthUser): Promise<Either<any, Error>> {
+    public async loginAsUser(data: StrapiAuthUser): Promise<ApiResponse<any>> {
         const response = await this.client.fetch('/auth/local', {
             headers: {
                 'Content-Type': 'application/json',
@@ -121,27 +127,27 @@ export class StrapiClientAdapter {
             body: JSON.stringify(data),
         })
             .then(response => response.json())
-            .then(json => IsLeft<any, Error>(json))
-            .catch(() => IsRight<any, Error>(new Error('Login failed')))
+            .then(json => IsLeft<any, string>(json))
+            .catch(() => IsRight<any, string>('Login failed'))
 
         return response
     }
 
     // BUG: Fetch in Strapi Client overides Authorization header
-    public async getCurrentUser(token: string): Promise<Either<API.Document, Error>> {
+    public async getCurrentUser(token: string): Promise<ApiResponse<StrapiShopOwner>> {
         const response = await fetch(process.env.STRAPI_URL + '/api/users/me', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         })
-            .then(response => response.json())
-            .then(json => IsLeft<API.Document, Error>(json))
-            .catch(() => IsRight<API.Document, Error>(new Error('No user logged in')))
+            .then(response => response.ok ? response.json() : Promise.reject(response.status))
+            .then(json => IsLeft<StrapiShopOwner, string>(json))
+            .catch(() => IsRight<StrapiShopOwner, string>('No user logged in'))
 
         return response
     }
 
-    public async uploadFile(file: string): Promise<Either<API.Document, Error>> {
+    public async uploadFile(file: string): Promise<ApiResponse<API.Document>> {
         const formData = new FormData();
         // Convert base64 string to a Buffer and append as a Blob/File
         const matches = file.match(/^data:(.+);base64,(.+)$/);
@@ -162,13 +168,13 @@ export class StrapiClientAdapter {
             body: formData,
         })
             .then(response => response.json())
-            .then(json => IsLeft<API.Document, Error>(json))
-            .catch(() => IsRight<API.Document, Error>(new Error('Upload failed')))
+            .then(json => IsLeft<API.Document, string>(json))
+            .catch(() => IsRight<API.Document, string>('Upload failed'))
 
         return response
     }
 
-    public async updateUser(user_token: string, id: string, data: Partial<StrapiUser>): Promise<Either<API.Document, Error>> {
+    public async updateUser(user_token: string, id: string, data: Partial<StrapiUserRequestBody>): Promise<ApiResponse<API.Document>> {
         const response = await fetch(process.env.STRAPI_URL + `/api/users/${id}`, {
             method: 'PUT',
             headers: {
@@ -178,8 +184,8 @@ export class StrapiClientAdapter {
             body: JSON.stringify(data)
         })
             .then(response => response.ok ? response.json() : Promise.reject())
-            .then(d => IsLeft<API.Document, Error>(d.data))
-            .catch(() => IsRight<API.Document, Error>(new Error('Request failed')))
+            .then(d => IsLeft<API.Document, string>(d.data))
+            .catch(() => IsRight<API.Document, string>('Request failed'))
         return response
     }
 

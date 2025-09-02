@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SideBar } from "@/components/SideBar";
 import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
+import { ContextProvider } from "@/contexts/Providers";
 
 import "./globals.scss";
 
@@ -18,12 +19,14 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
-        <NavBar />
-        <SideBar />
-        <main className="container mx-auto min-h-screen">
-          {children}
-        </main>
-        <Footer />
+        <ContextProvider>
+          <NavBar />
+          <SideBar />
+          <main className="container mx-auto min-h-screen">
+            {children}
+          </main>
+          <Footer />
+        </ContextProvider>
       </body>
     </html>
   );

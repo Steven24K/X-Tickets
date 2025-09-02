@@ -1,11 +1,11 @@
 "use client"
+import { AuthContext } from "@/contexts/AuthContext"
 import { None, Option, Some } from "@/types/Func"
 import Image from "next/image"
-import { useEffect, useState } from "react"
+import { use, useContext, useEffect, useState } from "react"
 
 interface ImageUploaderProps {
     userId: string
-    isOwner: boolean
     imageUrl?: string
     defaultImage: string
     height: number
@@ -13,6 +13,7 @@ interface ImageUploaderProps {
     imgClassName?: string
     editClassName?: string
     entity: ImageEntity
+    slug: string
 }
 
 type ImageEntity = 'ProfilePicture' | 'Banner' | 'EventImage';
@@ -23,8 +24,13 @@ interface ImageUploaderState {
 }
 
 export const ImageUploader = (props: ImageUploaderProps) => {
-    const { userId, isOwner, imageUrl, defaultImage, height, width, imgClassName, editClassName, entity } = props;
+    const { userId, slug, imageUrl, defaultImage, height, width, imgClassName, editClassName, entity } = props;
     const [state, setState] = useState<ImageUploaderState>({ imageContent: None(), uploadStatus: 'not-uploaded' })
+
+    const user = useContext(AuthContext)
+    const _user = use(user)
+
+    const isOwner = _user.kind == 'l' && _user.v.slug === slug
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];

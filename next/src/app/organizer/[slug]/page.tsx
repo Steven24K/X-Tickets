@@ -1,7 +1,7 @@
 import { PageProps } from "@/app/RouteParams";
 import { formatDateTime } from "@/app/utils";
-import { getCurrentUser } from "@/app/utils.server";
 import { ImageUploader } from "@/components/ImageUploader";
+import { ShopOwnerInfo } from "@/components/ShopOwnerInfo";
 import { StrapiClientAdapter } from "@/services/StrapiClient";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,8 +16,8 @@ export default async function OrganizerProfilePage(props: PageProps) {
     const eventOwner = await strapi.getEventOwnerBySlug(slug)
     if (eventOwner.kind == 'r') notFound()
 
-    const user = await getCurrentUser();
-    const isOwner = user.kind == 'l' && user.v.slug === slug
+    // TODO: Make components from authorized content
+    const isOwner = true
 
     return (
         <div>
@@ -32,7 +32,8 @@ export default async function OrganizerProfilePage(props: PageProps) {
                         defaultImage="/banner.avif"
                         userId={eventOwner.v.id}
                         imageUrl={eventOwner.v.Banner?.url}
-                        isOwner={isOwner} />
+                        slug={slug}
+                    />
                     <div className="absolute left-8 -bottom-16 flex items-center">
                         <div className="relative">
                             <ImageUploader
@@ -44,41 +45,11 @@ export default async function OrganizerProfilePage(props: PageProps) {
                                 defaultImage="/profile.avif"
                                 userId={eventOwner.v.id}
                                 imageUrl={eventOwner.v.ProfilePicture?.url}
-                                isOwner={isOwner}
+                                slug={slug}
                             />
                         </div>
                     </div>
-                    <div className="ml-40 flex flex-wrap items-center gap-4 mt-2">
-                        {isOwner ? (
-                            <form className="flex flex-wrap items-center gap-2" method="post" action='/api/updateUserForm'>
-                                <input
-                                    name='username'
-                                    type="text"
-                                    defaultValue={eventOwner.v.username}
-                                    className="text-xl font-bold border-b border-gray-300 focus:outline-none focus:border-blue-500 bg-transparent"
-                                    style={{ maxWidth: 200 }}
-                                />
-                                <input type='hidden' name="id" value={eventOwner.v.id} />
-                                <button
-                                    type="submit"
-                                    className="text-blue-600 text-sm font-semibold hover:underline"
-                                >
-                                    Save
-                                </button>
-                            </form>
-                        ) : (
-                            <h1 className="m-0 text-xl">{eventOwner.v.username}</h1>
-                        )}
-                        <span className="text-gray-500">@{eventOwner.v.slug}</span>
-                        {isOwner && (
-                            <Link
-                                href="/settings"
-                                className="ml-4 px-3 py-1 bg-gray-200 rounded text-sm font-semibold hover:bg-gray-300"
-                            >
-                                Settings
-                            </Link>
-                        )}
-                    </div>
+                    <ShopOwnerInfo slug={slug} eventOwner={eventOwner} />
                 </div>
                 <div className="mt-30 px-8">
                     <div className="flex items-center justify-between mb-6">

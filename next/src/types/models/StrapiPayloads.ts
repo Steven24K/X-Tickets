@@ -1,4 +1,4 @@
-export interface StrapiUser {
+export interface StrapiUserRequestBody {
     username: string;
     email: string;
     password: string;

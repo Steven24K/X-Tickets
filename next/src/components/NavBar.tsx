@@ -1,8 +1,11 @@
-import { getCurrentUser } from "@/app/utils.server";
+"use client"
+import { AuthContext } from "@/contexts/AuthContext"
 import Link from "next/link"
+import { use, useContext } from "react"
 
-export const NavBar = async () => {
-    const user = await getCurrentUser();
+export const NavBar = () => {
+    const user = useContext(AuthContext)
+    const _user = use(user)
 
     return <header className="bg-gray-800 text-white py-2 px-4">
         <div className="flex items-center justify-between">
@@ -12,9 +15,9 @@ export const NavBar = async () => {
             <nav>
                 <ul className="flex space-x-6 lg:text-lg sm:text-base">
                     {
-                        user.kind == 'l' ? <>
+                        _user.kind == 'l' ? <>
                             <li>
-                                <Link href={`/organizer/${user.v.slug}`} className="hover:underline">Welcome {user.v.username}</Link>
+                                <Link href={`/organizer/${_user.v.slug}`} className="hover:underline">Welcome {_user.v.username}</Link>
                             </li>
                             <li>
                                 <a href="/logout" className="hover:underline">Logout</a>
