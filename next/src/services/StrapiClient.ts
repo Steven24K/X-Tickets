@@ -109,6 +109,7 @@ export class StrapiClientAdapter {
             filters: {
                 slug: { $eq: slug },
             },
+            status: 'published'
         })
             .then((d: any) => {
                 if (d.length == 0) return IsRight<StrapiShopOwner, string>('No results')
