@@ -5,6 +5,7 @@ import { HeroBlock } from "./BuildingBlocks/Hero"
 import { ImageBlock } from "./BuildingBlocks/ImageBlock"
 import { OverviewBlock } from "./BuildingBlocks/OverviewBlock"
 import { FormBlock } from "./BuildingBlocks/Form"
+import { AuthorizeBlock } from "./BuildingBlocks/Authorize"
 
 type DisplayBlockProps = {
     blocks: PageBlock[]
@@ -29,7 +30,9 @@ export const DisplayBlocks = (props: DisplayBlockProps) => {
                     case 'blocks.overview':
                         return <OverviewBlock key={`${block.__component}_${block.id}`} {...block} pageProps={pageProps} />
                     case 'blocks.form':
-                        return <FormBlock key={`${block.__component}_${block.id}`} {...block} pageProps={pageProps}/>
+                        return <FormBlock key={`${block.__component}_${block.id}`} {...block} pageProps={pageProps} />
+                    case 'blocks.authorize':
+                        return <AuthorizeBlock key={`${block.__component}_${block.id}`} {...block} pageProps={pageProps} />
                     default:
                         return <div key={JSON.stringify(block)}>Block does not exist {JSON.stringify(block)}</div>
                 }

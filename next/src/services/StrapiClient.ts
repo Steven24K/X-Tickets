@@ -148,7 +148,7 @@ export class StrapiClientAdapter {
         return response
     }
 
-    public async uploadFile(file: string): Promise<ApiResponse<API.Document>> {
+    public async uploadFile(file: string, name: string): Promise<ApiResponse<API.Document>> {
         const formData = new FormData();
         // Convert base64 string to a Buffer and append as a Blob/File
         const matches = file.match(/^data:(.+);base64,(.+)$/);
@@ -162,7 +162,7 @@ export class StrapiClientAdapter {
         }
         const byteArray = new Uint8Array(byteNumbers);
         const blob = new Blob([byteArray], { type: mimeType });
-        formData.append('files', blob, `profile-picture-${Date.now().toLocaleString()}.` + mimeType.split('/')[1]);
+        formData.append('files', blob, `${name}-${Date.now().toLocaleString()}.` + mimeType.split('/')[1]);
 
         const response = await this.client.fetch('/upload', {
             method: 'POST',
@@ -187,6 +187,21 @@ export class StrapiClientAdapter {
             .then(response => response.ok ? response.json() : Promise.reject())
             .then(d => IsLeft<API.Document, string>(d.data))
             .catch(() => IsRight<API.Document, string>('Request failed'))
+        return response
+    }
+
+    public async createEvent(user_token: string, data: Partial<StrapiEvent>): Promise<ApiResponse<StrapiEvent>> {
+        const response = await fetch(process.env.STRAPI_URL + '/api/events', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${user_token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ...data, Image: data.ImageId })
+        })
+            .then(response => response.ok ? response.json() : Promise.reject())
+            .then(d => IsLeft<StrapiEvent, string>(d.data))
+            .catch(() => IsRight<StrapiEvent, string>('Request failed'))
         return response
     }
 

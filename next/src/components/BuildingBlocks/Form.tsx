@@ -52,6 +52,10 @@ const StrapiFieldType2FormFieldType = (strapi_type: StrapiFormField['__component
             return 'dropdown'
         case 'form-fields.info':
             return 'info'
+        case 'form-fields.file':
+            return 'file'
+        case 'form-fields.date-time-list':
+            return 'date-time-list'
         default:
             return 'info'
     }
@@ -67,6 +71,8 @@ function mapStrapiFieldToFormField<T>(field: StrapiFormField, index: number): Fo
         case 'form-fields.number':
         case 'form-fields.date-picker':
         case 'form-fields.time-select':
+        case 'form-fields.file':
+        case 'form-fields.date-time-list':
             return ({ kind: StrapiFieldType2FormFieldType(field.__component), label: field.Label, name: field.Name, weight: index, required: field.Required, defaultValue: field.DefaultValue, id: field.id }) as FormField
         case 'form-fields.hidden':
             return ({ kind: StrapiFieldType2FormFieldType(field.__component), label: field.Label, name: field.Name, weight: index, required: true, hide_label: true, defaultValue: field.DefaultValue, id: field.id }) as FormField

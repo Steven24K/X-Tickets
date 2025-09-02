@@ -37,6 +37,7 @@ export type StrapiEvent = API.DocumentResponse & {
     Price: number
     slug: string
     Image: StrapiImage
+    ImageId?: number
     Owner: StrapiShopOwner
     DatesAndTimes: StrapiDateTime[]
     SubEvents: StrapiEvent[]

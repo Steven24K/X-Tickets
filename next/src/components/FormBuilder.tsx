@@ -1,3 +1,5 @@
+import DateTimeList from "./SpecialFormFields/DateTimeList"
+
 export type FormField = DefaultField | Numberfield | DropDownField | RepeatField | InfoText
 
 type GenericFormField = {
@@ -11,7 +13,7 @@ type GenericFormField = {
 }
 
 type DefaultField = GenericFormField & {
-    kind: 'text' | 'email' | 'password' | 'textarea' | 'date' | 'time' | 'checkbox' | 'hidden'
+    kind: 'text' | 'email' | 'password' | 'textarea' | 'date' | 'time' | 'checkbox' | 'hidden' | 'file' | 'date-time-list'
     name: string
 }
 
@@ -50,6 +52,7 @@ export function FieldRenderer(props: FieldRendererProps) {
         case 'time':
         case 'password':
         case 'email':
+        case 'file':
             return <div className="mb-4">
                 {(!field.hide_label || field.hide_label == undefined) && <label className="block text-sm font-medium text-gray-700 mb-1">{field.label}{field.required ? " *" : ''}</label>}
                 <input
@@ -126,6 +129,11 @@ export function FieldRenderer(props: FieldRendererProps) {
                     }
                 </select>}
             </div>
+        case 'date-time-list':
+            return <div className="mb-4">
+                {(!field.hide_label || field.hide_label == undefined) && <label className="block text-sm font-medium text-gray-700 mb-1">{field.label}{field.required ? " *" : ''}</label>}
+                <DateTimeList name={field.name} />
+            </div>
         case 'info':
             return <div className="mb-4"><span className="italic text-gray-600">{field.name}</span></div>
         case 'repeat':
@@ -145,7 +153,7 @@ interface FormBuilderProps {
 }
 export function FormBuilder(props: FormBuilderProps) {
     const { fields, isDisabled, noSubmit, submitBtnText, action, method } = props
-    return <form className="max-w-lg space-y-6" action={action} method={method}>
+    return <form className="max-w-lg space-y-6" encType="multipart/form-data" action={action} method={method}>
         {
             fields.sort((a, b) => a.weight - b.weight)
                 .map(field => <FieldRenderer key={`${field.id}_${field.name}_${field.kind}`} field={field} />)

@@ -11,7 +11,9 @@ type StandardFormField = {
     "form-fields.password" |
     "form-fields.number" |
     "form-fields.date-picker" |
-    "form-fields.time-select"
+    "form-fields.time-select" |
+    "form-fields.file" |
+    "form-fields.date-time-list"
     id: number
     Label: string
     Name: string

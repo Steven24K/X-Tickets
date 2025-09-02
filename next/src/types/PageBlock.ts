@@ -8,7 +8,8 @@ export type PageBlock = (
     HeroBlockProps |
     ImageBlockProps |
     OverviewBlockProps | 
-    FormBlockProps
+    FormBlockProps | 
+    AuthorizeBlockProps
 )
     & {
         pageProps: PageProps
@@ -69,4 +70,10 @@ export type FormBlockProps = {
         RedirectUrl?: string
         Fields: StrapiFormField[]
     }
+}
+
+export type AuthorizeBlockProps = {
+    __component: "blocks.authorize"
+    id: number
+    AllowPublic: boolean
 }
